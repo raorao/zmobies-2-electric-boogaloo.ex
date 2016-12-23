@@ -40,8 +40,9 @@ defmodule Zmobies.WorldManager do
     GenServer.stop(:world)
   end
 
+  # to avoid read contention, we skip GenServer and delegate directly to ETS table.
   def at(%Location{} = location) do
-    GenServer.call(:world, {:at, location})
+    World.at(location)
   end
 
   def insert(%Location{} = location, value) do

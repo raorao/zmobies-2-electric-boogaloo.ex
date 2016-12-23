@@ -9,6 +9,10 @@ defmodule Zmobies.World do
     quote do: 0 > unquote(x) or unquote(x) >= unquote(x_lim) or 0 > unquote(y) or unquote(y) >= unquote(y_lim)
   end
 
+  def at(location) do
+    at(location, nil)
+  end
+
   def at(%Location{x: x, y: y}, {x_lim, y_lim}) when out_of_bounds(x, y, x_lim, y_lim) do
     :out_of_bounds
   end
