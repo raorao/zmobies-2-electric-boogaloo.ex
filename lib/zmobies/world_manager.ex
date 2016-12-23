@@ -57,19 +57,15 @@ defmodule Zmobies.WorldManager do
     GenServer.call(:world, {:move, from, to})
   end
 
-  def handle_call({:at, location}, _, state) do
-    {:reply, World.at(location, state), state}
+  def handle_call({:insert, location, value}, _, limits) do
+    {:reply, World.insert(location, value, limits), limits}
   end
 
-  def handle_call({:insert, location, value}, _, state) do
-    {:reply, World.insert(location, value, state), state}
+  def handle_call({:remove, location}, _, limits) do
+    {:reply, World.remove(location, limits), limits}
   end
 
-  def handle_call({:remove, location}, _, state) do
-    {:reply, World.remove(location, state), state}
-  end
-
-  def handle_call({:move, from, to}, _, state) do
-    {:reply, World.move(from, to, state), state}
+  def handle_call({:move, from, to}, _, limits) do
+    {:reply, World.move(from, to, limits), limits}
   end
 end
