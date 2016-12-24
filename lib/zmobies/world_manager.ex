@@ -1,6 +1,6 @@
 defmodule Zmobies.WorldManager do
   use GenServer
-  alias Zmobies.World
+  alias Zmobies.{World, Being}
 
   @doc ~S"""
     Module for managing global locations of beings.
@@ -11,19 +11,19 @@ defmodule Zmobies.WorldManager do
         iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 1))
         :vacant
         iex> Zmobies.WorldManager.insert(Zmobies.Location.at(x: 1, y: 1), :human)
-        {:ok, :human}
+        {:ok, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}}
         iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 1))
-        {:occupied, :human}
+        {:occupied, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}}
         iex> Zmobies.WorldManager.insert(Zmobies.Location.at(x: 1, y: 1), :zombie)
-        {:occupied, :human}
+        {:occupied, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}}
         iex> Zmobies.WorldManager.move(Zmobies.Location.at(x: 1, y: 1), Zmobies.Location.at(x: 1, y: 2))
         iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 2))
-        {:occupied, :human}
+        {:occupied, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}}
         iex> Zmobies.WorldManager.remove(Zmobies.Location.at(x: 1, y: 1))
         iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 1))
         :vacant
         iex> Zmobies.WorldManager.all
-        [:human]
+        [%Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}]
     """
 
   alias Zmobies.Location
@@ -53,8 +53,8 @@ defmodule Zmobies.WorldManager do
   # to avoid read contention, we skip GenServer and delegate directly to ETS table.
   def all, do: World.all
 
-  def insert(%Location{} = location, value) do
-    GenServer.call(:world, {:insert, location, value})
+  def insert(%Location{} = location, type) do
+    GenServer.call(:world, {:insert, location, type})
   end
 
   def remove(%Location{} = location) do
@@ -70,8 +70,9 @@ defmodule Zmobies.WorldManager do
     {:noreply, limits}
   end
 
-  def handle_call({:insert, location, value}, _, limits) do
-    {:reply, World.insert(location, value, limits), limits}
+  def handle_call({:insert, location, type}, _, limits) do
+    being = Being.new(type, location)
+    {:reply, World.insert(location, being, limits), limits}
   end
 
   def handle_call({:remove, location}, _, limits) do

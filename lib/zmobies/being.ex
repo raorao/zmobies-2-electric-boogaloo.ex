@@ -7,6 +7,10 @@ defmodule Zmobies.Being do
     %__MODULE__{location: Location.at(x: x, y: y), type: type}
   end
 
+  def new(type, location = %Location{}) do
+    %__MODULE__{location: location, type: type}
+  end
+
   def x(%Being{location: %Location{x: x}}), do: x
   def y(%Being{location: %Location{y: y}}), do: y
 
