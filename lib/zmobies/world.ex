@@ -2,7 +2,7 @@ defmodule Zmobies.World do
   alias Zmobies.Location
 
   def init do
-    :ets.new(:world, [:set, :named_table, :public])
+    :ets.new(:world, [:set, :named_table])
   end
 
   defmacro out_of_bounds(x, y, x_lim, y_lim) do

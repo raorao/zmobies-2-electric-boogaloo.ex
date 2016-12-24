@@ -27,13 +27,16 @@ defmodule Zmobies.WorldManager do
   alias Zmobies.Location
 
   def start_link(x_lim, y_lim) do
-    World.init
-
     GenServer.start_link(
       __MODULE__,
       {x_lim, y_lim},
       name: :world
     )
+  end
+
+  def init(limits) do
+    send(self, :initialize_table)
+    {:ok, limits}
   end
 
   def stop do
@@ -55,6 +58,11 @@ defmodule Zmobies.WorldManager do
 
   def move(%Location{} = from, %Location{} = to) do
     GenServer.call(:world, {:move, from, to})
+  end
+
+  def handle_info(:initialize_table, limits) do
+    World.init
+    {:noreply, limits}
   end
 
   def handle_call({:insert, location, value}, _, limits) do
