@@ -22,6 +22,8 @@ defmodule Zmobies.WorldManager do
         iex> Zmobies.WorldManager.remove(Zmobies.Location.at(x: 1, y: 1))
         iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 1))
         :vacant
+        iex> Zmobies.WorldManager.all
+        [:human]
     """
 
   alias Zmobies.Location
@@ -47,6 +49,9 @@ defmodule Zmobies.WorldManager do
   def at(%Location{} = location) do
     World.at(location)
   end
+
+  # to avoid read contention, we skip GenServer and delegate directly to ETS table.
+  def all, do: World.all
 
   def insert(%Location{} = location, value) do
     GenServer.call(:world, {:insert, location, value})

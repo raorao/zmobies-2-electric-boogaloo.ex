@@ -62,4 +62,10 @@ defmodule ZmobiesWorldTest do
     assert World.move(Location.at(x: 1, y: 1), Location.at(x: 11, y: 1), {10, 10}) == :out_of_bounds
     assert World.move(Location.at(x: 1, y: 11), Location.at(x: 1, y: 1), {10, 10}) == :out_of_bounds
   end
+
+  test "can return all keys" do
+    World.insert Location.at(x: 1, y: 1), :zombie, {10, 10}
+    World.insert Location.at(x: 1, y: 2), :human, {10, 10}
+    assert (World.all |> Enum.sort) == [:human, :zombie]
+  end
 end

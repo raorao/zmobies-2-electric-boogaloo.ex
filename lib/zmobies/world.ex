@@ -24,6 +24,12 @@ defmodule Zmobies.World do
     end
   end
 
+  def all do
+    :ets.match(:world, :'$1')
+    |> List.flatten
+    |> Enum.map(&elem(&1, 1))
+  end
+
   def insert(%Location{x: x, y: y}, _, {x_lim, y_lim})
     when out_of_bounds(x, y, x_lim, y_lim),
     do: :out_of_bounds
