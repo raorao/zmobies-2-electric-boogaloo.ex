@@ -20,6 +20,18 @@ defmodule Zmobies.Being do
 
   def type(%Being{type: type}), do: type
 
+  def neighbors(_being, range: 0), do: []
+
+  def neighbors(%Being{location: location}, range: range) do
+    %Location{x: current_x, y: current_y} = location
+    x_range = (current_x - range)..(current_x + range)
+    y_range = (current_y - range)..(current_y + range)
+
+    (for x <- x_range, y <-  y_range, do: Location.at(x: x, y: y))
+    |> Kernel.--([location])
+  end
+
+
   defimpl String.Chars, for: Zmobies.Being do
     def to_string(%{type: type}) do
       case type do
