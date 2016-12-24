@@ -22,13 +22,14 @@ defmodule Zmobies.Being do
 
   def neighbors(_being, range: 0), do: []
 
-  def neighbors(%Being{location: location}, range: range) do
-    %Location{x: current_x, y: current_y} = location
+  def neighbors(%Being{location: current_location}, range: range) do
+    %Location{x: current_x, y: current_y} = current_location
     x_range = (current_x - range)..(current_x + range)
     y_range = (current_y - range)..(current_y + range)
 
     (for x <- x_range, y <-  y_range, do: Location.at(x: x, y: y))
-    |> Kernel.--([location])
+    |> Enum.sort_by(fn(location) -> Location.distance(current_location, location) end)
+    |> Enum.drop(1)
   end
 
 
