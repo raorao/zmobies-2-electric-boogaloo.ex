@@ -32,7 +32,6 @@ defmodule Zmobies.Being do
     |> Enum.drop(1)
   end
 
-
   defimpl String.Chars, for: Zmobies.Being do
     def to_string(%{type: type}) do
       case type do
