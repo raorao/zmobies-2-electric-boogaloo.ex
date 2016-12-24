@@ -65,6 +65,10 @@ defmodule Zmobies.WorldManager do
     GenServer.call(:world, {:move, from, to})
   end
 
+  def insert_random(type) do
+    GenServer.call(:world, {:insert_random, type})
+  end
+
   def handle_info(:initialize_table, limits) do
     World.init
     {:noreply, limits}
@@ -81,5 +85,11 @@ defmodule Zmobies.WorldManager do
 
   def handle_call({:move, from, to}, _, limits) do
     {:reply, World.move(from, to, limits), limits}
+  end
+
+  def handle_call({:insert_random, type}, _, limits = {x_lim, y_lim}) do
+    location = Location.at(x: :rand.uniform(x_lim ), y: :rand.uniform(y_lim))
+    being = Being.new(type, location)
+    {:reply, World.insert(location, being, limits), limits}
   end
 end

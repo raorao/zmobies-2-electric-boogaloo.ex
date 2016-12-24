@@ -9,7 +9,7 @@ defmodule Zmobies do
 
     # Define workers and child supervisors to be supervised
     children = [
-      worker(WorldManager, [10,10]),
+      supervisor(Zmobies.WorldSupervisor, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
