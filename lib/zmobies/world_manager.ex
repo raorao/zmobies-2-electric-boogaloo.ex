@@ -1,6 +1,6 @@
 defmodule Zmobies.WorldManager do
   use GenServer
-  alias Zmobies.World
+  alias Zmobies.{World, Being}
 
   @doc ~S"""
     Module for managing global locations of beings.
@@ -65,8 +65,8 @@ defmodule Zmobies.WorldManager do
     GenServer.call(:world, {:move, from, to})
   end
 
-  def insert_random(type) do
-    GenServer.call(:world, {:insert_random, type})
+  def place(type) do
+    GenServer.call(:world, {:place, type})
   end
 
   def handle_info(:initialize_table, limits) do
@@ -86,8 +86,12 @@ defmodule Zmobies.WorldManager do
     {:reply, World.move(from, to, limits), limits}
   end
 
-  def handle_call({:insert_random, type}, _, limits = {x_lim, y_lim}) do
+  def handle_call({:place, type}, _, limits = {x_lim, y_lim}) do
     location = Location.at(x: :rand.uniform(x_lim ), y: :rand.uniform(y_lim))
-    {:reply, World.insert(location, type, limits), limits}
+    being = type
+    |> Being.new(location)
+    |> Being.set_uuid
+
+    {:reply, World.insert(location, being, limits), limits}
   end
 end

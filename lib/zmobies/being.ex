@@ -1,6 +1,6 @@
 defmodule Zmobies.Being do
   @enforce_keys [:location, :type]
-  defstruct [:location, :type]
+  defstruct [:location, :type, :uuid]
   alias Zmobies.{Location, Being}
 
   def new(type, x: x, y: y) when x != nil and y != nil do
@@ -9,6 +9,10 @@ defmodule Zmobies.Being do
 
   def new(type, location = %Location{}) do
     %__MODULE__{location: location, type: type}
+  end
+
+  def set_uuid(being = %Being{}) do
+    %{ being | :uuid => UUID.uuid1() }
   end
 
   def x(%Being{location: %Location{x: x}}), do: x

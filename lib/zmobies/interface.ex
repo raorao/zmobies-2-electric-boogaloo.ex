@@ -10,7 +10,7 @@ defmodule Zmobies.Interface do
 
     human_messages = if humans > 0 do
       for _ <- 1..humans do
-        WorldManager.insert_random(:human)
+        WorldManager.place(:human)
       end
     else
       []
@@ -18,7 +18,7 @@ defmodule Zmobies.Interface do
 
     zombie_messages = if zombies > 0 do
        for _ <- 1..zombies do
-        WorldManager.insert_random(:zombie)
+        WorldManager.place(:zombie)
       end
     else
       []
