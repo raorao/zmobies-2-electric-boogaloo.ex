@@ -1,6 +1,5 @@
 defmodule Zmobies do
   use Application
-  alias Zmobies.WorldManager
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
