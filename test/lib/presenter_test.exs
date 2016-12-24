@@ -1,23 +1,33 @@
 defmodule ZmobiesPresenterTest do
   use ExUnit.Case
-  alias Zmobies.{Being, Presenter}
+  alias Zmobies.{Being, Presenter, World}
   doctest Presenter
 
   describe "to_s" do
     test "can print an empty list" do
-      assert Presenter.to_s([]) == ""
+      World.init
+      assert Presenter.to_s == ""
     end
 
     test "can print a being on a one-by-one grid" do
-      assert Presenter.to_s([Being.new(:zombie, x: 1, y: 1)]) == "Z"
+      World.init
+      beings = [Being.new(:zombie, x: 1, y: 1)]
+      beings
+      |> Enum.map(fn(being) -> World.insert(being.location, being.type, nil) end)
+      assert Presenter.to_s == "Z"
     end
 
     test "can print two beings on a two-by-two grid" do
+      World.init
       beings = [Being.new(:zombie, x: 1, y: 1), Being.new(:human, x: 2, y: 2)]
-      assert Presenter.to_s(beings) == "Z\n  H"
+      beings
+      |> Enum.map(fn(being) -> World.insert(being.location, being.type, nil) end)
+      assert Presenter.to_s == "Z\n  H"
+
     end
 
     test "can print a large grid" do
+      World.init
       beings = [
         Being.new(:zombie, x: 2, y: 1),
         Being.new(:human,  x: 3, y: 1),
@@ -28,7 +38,10 @@ defmodule ZmobiesPresenterTest do
         Being.new(:zombie, x: 4, y: 4),
       ]
 
-      assert Presenter.to_s(beings) == "  Z H\nZ   Z H\n\nH     Z"
+      beings
+      |> Enum.map(fn(being) -> World.insert(being.location, being.type, nil) end)
+
+      assert Presenter.to_s == "  Z H\nZ   Z H\n\nH     Z"
     end
   end
 end

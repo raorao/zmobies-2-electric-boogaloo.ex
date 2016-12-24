@@ -28,8 +28,7 @@ defmodule Zmobies.Interface do
   end
 
   def print do
-    Zmobies.WorldManager.all
-    |> Zmobies.Presenter.to_s
+    Zmobies.Presenter.to_s
     |> IO.puts
   end
 
