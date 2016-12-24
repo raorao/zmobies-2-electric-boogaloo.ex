@@ -20,9 +20,9 @@ defmodule Zmobies.Being do
 
   def type(%Being{type: type}), do: type
 
-  def neighbors(_being, range: 0), do: []
+  def surroundings(_being, range: 0), do: []
 
-  def neighbors(%Being{location: current_location}, range: range) do
+  def surroundings(%Being{location: current_location}, range: range) do
     %Location{x: current_x, y: current_y} = current_location
     x_range = (current_x - range)..(current_x + range)
     y_range = (current_y - range)..(current_y + range)
