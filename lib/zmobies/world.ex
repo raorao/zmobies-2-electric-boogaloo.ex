@@ -6,7 +6,7 @@ defmodule Zmobies.World do
   end
 
   defmacro out_of_bounds(x, y, x_lim, y_lim) do
-    quote do: 0 > unquote(x) or unquote(x) > unquote(x_lim) or 0 > unquote(y) or unquote(y) > unquote(y_lim)
+    quote do: 0 >= unquote(x) or unquote(x) > unquote(x_lim) or 0 >= unquote(y) or unquote(y) > unquote(y_lim)
   end
 
   def at(location) do
