@@ -13,9 +13,9 @@ defmodule Zmobies.World do
     at(location, nil)
   end
 
-  def at(%Location{x: x, y: y}, {x_lim, y_lim}) when out_of_bounds(x, y, x_lim, y_lim) do
-    :out_of_bounds
-  end
+  def at(%Location{x: x, y: y}, {x_lim, y_lim})
+    when out_of_bounds(x, y, x_lim, y_lim),
+    do: :out_of_bounds
 
   def at(location, _limits) do
     case :ets.lookup(:world, location) do
@@ -24,9 +24,9 @@ defmodule Zmobies.World do
     end
   end
 
-  def insert(%Location{x: x, y: y}, _, {x_lim, y_lim}) when out_of_bounds(x, y, x_lim, y_lim) do
-    :out_of_bounds
-  end
+  def insert(%Location{x: x, y: y}, _, {x_lim, y_lim})
+    when out_of_bounds(x, y, x_lim, y_lim),
+    do: :out_of_bounds
 
   def insert(location, value, limits) do
     case :ets.insert_new(:world, {location, value}) do
@@ -35,9 +35,9 @@ defmodule Zmobies.World do
     end
   end
 
-  def remove(%Location{x: x, y: y}, {x_lim, y_lim}) when out_of_bounds(x, y, x_lim, y_lim) do
-    :out_of_bounds
-  end
+  def remove(%Location{x: x, y: y}, {x_lim, y_lim})
+    when out_of_bounds(x, y, x_lim, y_lim),
+    do: :out_of_bounds
 
   def remove(location, _limits) do
     case :ets.delete(:world, location) do
@@ -46,9 +46,10 @@ defmodule Zmobies.World do
     end
   end
 
-  def move(%Location{x: x, y: y}, %Location{x: new_x, y: new_y}, {x_lim, y_lim}) when out_of_bounds(x, y, x_lim, y_lim) or out_of_bounds(new_x, new_y, x_lim, y_lim)   do
-    :out_of_bounds
-  end
+  def move(%Location{x: x, y: y}, %Location{x: new_x, y: new_y}, {x_lim, y_lim})
+    when out_of_bounds(x, y, x_lim, y_lim)
+    or out_of_bounds(new_x, new_y, x_lim, y_lim),
+    do: :out_of_bounds
 
   def move(from, to, state) do
     {:occupied, value} = at(from, state)

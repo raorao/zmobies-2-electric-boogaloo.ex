@@ -8,6 +8,13 @@ defmodule ZmobiesWorldTest do
     assert World.at(Location.at(x: 1, y: 1), {10, 10}) == :vacant
   end
 
+  test "cannot read out of bounds area" do
+    assert World.at(Location.at(x: 11, y: 1), {10, 10})  == :out_of_bounds
+    assert World.at(Location.at(x: 1, y: 11), {10, 10}) == :out_of_bounds
+    assert World.at(Location.at(x: -1, y: 1), {10, 10}) == :out_of_bounds
+    assert World.at(Location.at(x: 1, y: -1), {10, 10}) == :out_of_bounds
+  end
+
   test "can insert into vacant entry" do
     World.init
     assert World.insert(Location.at(x: 1, y: 1), :zombie, {10, 10}) == {:ok, :zombie}
@@ -22,14 +29,7 @@ defmodule ZmobiesWorldTest do
 
   test "cannot insert into out of bounds area" do
     World.init
-    assert World.at(Location.at(x: 11, y: 1), {10, 10})  == :out_of_bounds
-    assert World.at(Location.at(x: 1, y: 11), {10, 10}) == :out_of_bounds
-    assert World.at(Location.at(x: -1, y: 1), {10, 10}) == :out_of_bounds
-    assert World.at(Location.at(x: 1, y: -1), {10, 10}) == :out_of_bounds
     assert World.insert(Location.at(x: 11, y: 1), :zombie, {10, 10}) == :out_of_bounds
-    assert World.remove(Location.at(x: 11, y: 1), {10, 10}) == :out_of_bounds
-    assert World.move(Location.at(x: 1, y: 1), Location.at(x: 11, y: 1), {10, 10}) == :out_of_bounds
-    assert World.move(Location.at(x: 1, y: 11), Location.at(x: 1, y: 1), {10, 10}) == :out_of_bounds
   end
 
   test "can delete entry" do
@@ -37,6 +37,11 @@ defmodule ZmobiesWorldTest do
     World.insert Location.at(x: 1, y: 1), :zombie, {10, 10}
     World.remove Location.at(x: 1, y: 1), {10, 10}
     assert World.at(Location.at(x: 1, y: 1), {10, 10}) == :vacant
+  end
+
+  test "cannot delete out of bounds" do
+    World.init
+    assert World.remove(Location.at(x: 11, y: 1), {10, 10}) == :out_of_bounds
   end
 
   test "can move entry from one location to another" do
@@ -54,5 +59,11 @@ defmodule ZmobiesWorldTest do
     assert World.move(Location.at(x: 1, y: 1), Location.at(x: 1, y: 2), {10, 10}) == {:occupied, :human}
     assert World.at(Location.at(x: 1, y: 1), {10, 10}) == {:occupied, :zombie}
     assert World.at(Location.at(x: 1, y: 2), {10, 10}) == {:occupied, :human}
+  end
+
+  test "cannot move out of bounds" do
+    World.init
+    assert World.move(Location.at(x: 1, y: 1), Location.at(x: 11, y: 1), {10, 10}) == :out_of_bounds
+    assert World.move(Location.at(x: 1, y: 11), Location.at(x: 1, y: 1), {10, 10}) == :out_of_bounds
   end
 end
