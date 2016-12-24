@@ -34,6 +34,13 @@ defmodule Zmobies.World do
     when out_of_bounds(x, y, x_lim, y_lim),
     do: :out_of_bounds
 
+  def insert(location, being = %Being{}, limits) do
+    case :ets.insert_new(:world, {location, being}) do
+      true -> {:ok, being}
+      false -> at(location, limits)
+    end
+  end
+
   def insert(location, type, limits) do
     being = Being.new(type, location)
     case :ets.insert_new(:world, {location, being}) do
@@ -61,7 +68,7 @@ defmodule Zmobies.World do
   def move(from, to, state) do
     {:occupied, being} = at(from, state)
 
-    case insert(to, Being.type(being), state) do
+    case insert(to, (%{being | :location => to}), state) do
       {:ok, _} -> remove(from, state)
       {:occupied, being} -> {:occupied, being}
     end
