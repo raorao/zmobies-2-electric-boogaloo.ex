@@ -14,6 +14,8 @@ defmodule Zmobies.Being do
   def x(%Being{location: %Location{x: x}}), do: x
   def y(%Being{location: %Location{y: y}}), do: y
 
+  def type(%Being{type: type}), do: type
+
   defimpl String.Chars, for: Zmobies.Being do
     def to_string(%{type: type}) do
       case type do

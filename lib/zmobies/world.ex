@@ -1,5 +1,5 @@
 defmodule Zmobies.World do
-  alias Zmobies.Location
+  alias Zmobies.{Location, Being}
 
   def init do
     :ets.new(:world, [:set, :named_table])
@@ -19,7 +19,7 @@ defmodule Zmobies.World do
 
   def at(location, _limits) do
     case :ets.lookup(:world, location) do
-      [{^location, value}] -> {:occupied, value}
+      [{^location, being}] -> {:occupied, being}
       [] -> :vacant
     end
   end
@@ -34,9 +34,10 @@ defmodule Zmobies.World do
     when out_of_bounds(x, y, x_lim, y_lim),
     do: :out_of_bounds
 
-  def insert(location, value, limits) do
-    case :ets.insert_new(:world, {location, value}) do
-      true -> {:ok, value}
+  def insert(location, type, limits) do
+    being = Being.new(type, location)
+    case :ets.insert_new(:world, {location, being}) do
+      true -> {:ok, being}
       false -> at(location, limits)
     end
   end
@@ -58,11 +59,11 @@ defmodule Zmobies.World do
     do: :out_of_bounds
 
   def move(from, to, state) do
-    {:occupied, value} = at(from, state)
+    {:occupied, being} = at(from, state)
 
-    case insert(to, value, state) do
-      {:ok, ^value} -> remove(from, state)
-      {:occupied, value} -> {:occupied, value}
+    case insert(to, Being.type(being), state) do
+      {:ok, _} -> remove(from, state)
+      {:occupied, being} -> {:occupied, being}
     end
   end
 end

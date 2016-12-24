@@ -1,6 +1,6 @@
 defmodule Zmobies.WorldManager do
   use GenServer
-  alias Zmobies.{World, Being}
+  alias Zmobies.World
 
   @doc ~S"""
     Module for managing global locations of beings.
@@ -18,12 +18,12 @@ defmodule Zmobies.WorldManager do
         {:occupied, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}}
         iex> Zmobies.WorldManager.move(Zmobies.Location.at(x: 1, y: 1), Zmobies.Location.at(x: 1, y: 2))
         iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 2))
-        {:occupied, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}}
+        {:occupied, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 2}, type: :human}}
         iex> Zmobies.WorldManager.remove(Zmobies.Location.at(x: 1, y: 1))
         iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 1))
         :vacant
         iex> Zmobies.WorldManager.all
-        [%Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}]
+        [%Zmobies.Being{location: %Zmobies.Location{x: 1, y: 2}, type: :human}]
     """
 
   alias Zmobies.Location
@@ -75,8 +75,7 @@ defmodule Zmobies.WorldManager do
   end
 
   def handle_call({:insert, location, type}, _, limits) do
-    being = Being.new(type, location)
-    {:reply, World.insert(location, being, limits), limits}
+    {:reply, World.insert(location, type, limits), limits}
   end
 
   def handle_call({:remove, location}, _, limits) do
@@ -89,7 +88,6 @@ defmodule Zmobies.WorldManager do
 
   def handle_call({:insert_random, type}, _, limits = {x_lim, y_lim}) do
     location = Location.at(x: :rand.uniform(x_lim ), y: :rand.uniform(y_lim))
-    being = Being.new(type, location)
-    {:reply, World.insert(location, being, limits), limits}
+    {:reply, World.insert(location, type, limits), limits}
   end
 end
