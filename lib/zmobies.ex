@@ -1,5 +1,6 @@
 defmodule Zmobies do
   use Application
+  alias Zmobies.WorldManager
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
@@ -8,8 +9,7 @@ defmodule Zmobies do
 
     # Define workers and child supervisors to be supervised
     children = [
-      # Starts a worker by calling: Zmobies.Worker.start_link(arg1, arg2, arg3)
-      # worker(Zmobies.Worker, [arg1, arg2, arg3]),
+      worker(WorldManager, [10,10]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
