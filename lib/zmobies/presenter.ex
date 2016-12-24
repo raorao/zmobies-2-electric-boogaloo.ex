@@ -5,6 +5,7 @@ defmodule Zmobies.Presenter do
     sorted = :world
     |> generate_sorted
     |> Enum.to_list
+    |> List.keysort(0)
 
     case sorted do
       [] -> ""
