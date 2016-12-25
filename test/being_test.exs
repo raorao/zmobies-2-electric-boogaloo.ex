@@ -1,6 +1,6 @@
 defmodule ZmobiesBeingTest do
   use ExUnit.Case
-  alias Zmobies.{Location, Being, World}
+  alias Zmobies.{Being, World}
   doctest Being
 
   describe "visible_locations" do
