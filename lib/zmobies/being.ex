@@ -1,7 +1,7 @@
 defmodule Zmobies.Being do
   @enforce_keys [:location, :type]
   defstruct [:location, :type, :uuid]
-  alias Zmobies.{Location, Being}
+  alias Zmobies.{Location, Being, WorldManager}
 
   def new(type, x: x, y: y) when x != nil and y != nil do
     %__MODULE__{location: Location.at(x: x, y: y), type: type}
@@ -30,6 +30,13 @@ defmodule Zmobies.Being do
     (for x <- x_range, y <-  y_range, do: Location.at(x: x, y: y))
     |> Enum.sort_by(fn(location) -> Location.distance(current_location, location) end)
     |> Enum.drop(1)
+  end
+
+  def proximity_stream(_, range: 0), do: Stream.map([], & &1)
+
+  def proximity_stream(being = %Being{}, range: range) do
+    visible_locations(being, range: range)
+    |> Stream.map(&WorldManager.at/1)
   end
 
   defimpl String.Chars, for: Zmobies.Being do
