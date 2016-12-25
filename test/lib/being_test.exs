@@ -37,6 +37,7 @@ defmodule ZmobiesBeingTest do
         %Zmobies.Location{x: 7, y: 3},
         %Zmobies.Location{x: 7, y: 7},
       ]
+
       assert Being.visible_locations(being, range: 2) == locations
     end
   end
