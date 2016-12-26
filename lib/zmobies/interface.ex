@@ -1,5 +1,5 @@
 defmodule Zmobies.Interface do
-  alias Zmobies.{WorldSupervisor, WorldManager, Human, GameManager, Zombie}
+  alias Zmobies.{WorldSupervisor, WorldManager, GameManager, Character}
 
   def start do
     start(x: 40, y: 40, humans: 50, zombies: 30)
@@ -12,7 +12,7 @@ defmodule Zmobies.Interface do
     human_messages = if humans > 0 do
       for _ <- 1..humans do
         case WorldManager.place(:human) do
-          {:ok, being} -> Human.start_link(being)
+          {:ok, being} -> Character.start_link(being)
           {:occupied, _} -> WorldManager.place(:human)
         end
       end
@@ -23,7 +23,7 @@ defmodule Zmobies.Interface do
     zombie_messages = if zombies > 0 do
        for _ <- 1..zombies do
         case WorldManager.place(:zombie) do
-          {:ok, being} -> Zombie.start_link(being)
+          {:ok, being} -> Character.start_link(being)
           {:occupied, _} -> WorldManager.place(:zombie)
         end
       end

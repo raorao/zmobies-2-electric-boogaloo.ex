@@ -44,6 +44,7 @@ defmodule Zmobies.WorldManager do
   end
 
   # to avoid read contention, we skip GenServer and delegate directly to ETS table.
+  @spec at(%Location{}) :: :vacant | {:occupied, %Being{}}
   def at(%Location{} = location) do
     World.at(location)
   end

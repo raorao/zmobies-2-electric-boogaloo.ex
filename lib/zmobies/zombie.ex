@@ -1,50 +1,27 @@
 defmodule Zmobies.Zombie do
-  use GenServer
-  alias Zmobies.{Movement, Being, Movement}
+  alias Zmobies.{Being, Movement}
 
-  def start_link(being) do
-    GenServer.start_link(
-      __MODULE__,
-      being,
-      name: via_tuple(being)
-    )
-  end
-
-  def init(being) do
-    schedule_next_move
-    {:ok, being}
-  end
-
-  def stop(being) do
-    GenServer.stop(via_tuple(being))
-  end
-
-  def via_tuple(being) do
-    {:via, :gproc, {:n, :l, being.uuid}}
-  end
-
-  def handle_info(:move, being) do
-    new_being = being
-    |> Movement.proximity_stream
-    |> calculate_next_move(being)
-    |> Movement.move(being)
-
-    schedule_next_move
-    {:noreply, new_being}
-  end
-
-  defp calculate_next_move(proximity_stream, being = %Being{location: current_location}) do
-    nearest_enemy = proximity_stream
-    |> Stream.take(3)
+  def act(proximity_stream, being) do
+    adjacent_enemy = proximity_stream
+    |> Stream.take(1)
     |> Movement.nearest_enemy(being)
 
-    case nearest_enemy do
-      {enemy_location, _enemy} -> Movement.towards(enemy_location, current_location)
-      nil -> []
+    case adjacent_enemy do
+      {enemy_location, _enemy} ->
+        {:attack, enemy_location}
+      nil -> {:move, chase(proximity_stream, being)}
     end
   end
 
-  defp schedule_next_move do
-    Process.send_after(self, :move, 200)
+  defp chase(proximity_stream, being = %Being{location: current_location}) do
+    nearest_enemy = proximity_stream
+    |> Stream.drop(1)
+    |> Stream.take(2)
+    |> Movement.nearest_enemy(being)
+
+    case nearest_enemy do
+      {enemy_location, _} -> Movement.away_from(enemy_location, current_location)
+      nil -> Movement.random(current_location)
+    end
   end
 end

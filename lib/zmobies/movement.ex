@@ -1,5 +1,5 @@
 defmodule Zmobies.Movement do
-  alias Zmobies.{Location, WorldManager, Being}
+  alias Zmobies.{Location, WorldManager, Being, Zombie}
 
   def proximity_stream(being = %Being{}) do
     Stream.unfold({1, being.location}, &next_ring/1)
@@ -29,15 +29,6 @@ defmodule Zmobies.Movement do
     {ring, {range + 1, location}}
   end
 
-  def move([], being), do: being
-
-  def move([ new_location | backups ], being) do
-    case WorldManager.move(being.location, new_location) do
-      {:ok, moved_being} -> moved_being
-      _ -> move(backups, being)
-    end
-  end
-
   def towards(target, current) do
     all_possible_locations(current)
     |> Enum.filter(fn(location) -> distance(current, target) >= distance(location, target) end)
@@ -50,6 +41,10 @@ defmodule Zmobies.Movement do
     |> Enum.shuffle
   end
 
+  def random(current) do
+    all_possible_locations(current)
+    |> Enum.shuffle
+  end
 
   defp all_possible_locations(current = %Location{x: x, y: y}) do
     all_locations  = for new_x <- (x - 1)..(x + 1), new_y <- (y - 1)..(y + 1) do
