@@ -54,10 +54,8 @@ defmodule Zmobies.World do
     do: :out_of_bounds
 
   def remove(location, _limits) do
-    case :ets.delete(:world, location) do
-      true -> :ok
-      false -> :vacant
-    end
+    :ets.delete(:world, location)
+    :ok
   end
 
   def move(%Location{x: x, y: y}, %Location{x: new_x, y: new_y}, {x_lim, y_lim})
