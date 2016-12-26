@@ -3,25 +3,40 @@ defmodule Zmobies.Being do
   defstruct [:location, :type, :uuid]
   alias Zmobies.{Location, Being}
 
+  @type character_type :: :human | :zombie
+
+  @spec new(character_type, x: number, y: number) :: %Being{}
   def new(type, x: x, y: y) when x != nil and y != nil do
     %__MODULE__{location: Location.at(x: x, y: y), type: type}
   end
 
+  @spec new(character_type, %Location{}) :: %Being{}
   def new(type, location = %Location{}) do
     %__MODULE__{location: location, type: type}
   end
 
+  @spec set_uuid(%Being{}) :: %Being{uuid: String.t}
   def set_uuid(being = %Being{}) do
     %{ being | :uuid => UUID.uuid1() }
   end
 
+  @spec x(%Being{}) :: number
   def x(%Being{location: %Location{x: x}}), do: x
+
+  @spec y(%Being{}) :: number
   def y(%Being{location: %Location{y: y}}), do: y
 
+  @spec type(%Being{}) :: character_type
   def type(%Being{type: type}), do: type
 
+  @spec turn(%Being{}) :: {:error, :already_turned} | {:ok, %Being{}}
+  def turn(%Being{type: :zombie}), do: {:error, :already_turned}
+  def turn(being = %Being{type: :human}) do
+    {:ok, %{being | type: :zombie} }
+  end
+
   defimpl String.Chars, for: Zmobies.Being do
-    def to_string(%{type: type}) do
+    def to_string(%Being{type: type}) do
       case type do
         :zombie -> "Z"
         :human  -> "H"
