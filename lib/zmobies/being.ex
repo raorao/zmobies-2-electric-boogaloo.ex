@@ -1,7 +1,7 @@
 defmodule Zmobies.Being do
   @enforce_keys [:location, :type]
   defstruct [:location, :type, :uuid]
-  alias Zmobies.{Location, Being, WorldManager}
+  alias Zmobies.{Location, Being}
 
   def new(type, x: x, y: y) when x != nil and y != nil do
     %__MODULE__{location: Location.at(x: x, y: y), type: type}
