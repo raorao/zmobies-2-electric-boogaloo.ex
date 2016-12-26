@@ -2,7 +2,7 @@ defmodule Zmobies.Interface do
   alias Zmobies.{WorldSupervisor, WorldManager, GameManager, Character}
 
   def start do
-    start(x: 40, y: 40, humans: 50, zombies: 30)
+    start(x: 10, y: 10, humans: 20, zombies: 3)
   end
 
   def start(x: x, y: y, humans: humans, zombies: zombies) do
@@ -36,12 +36,14 @@ defmodule Zmobies.Interface do
 
   def run do
     start
-    for _ <- 1..100 do
-      new_board =  Zmobies.Presenter.to_s
-      IEx.Helpers.clear
-      IO.puts new_board
-      :timer.sleep(100)
-    end
+    do_run
   end
 
+  def do_run do
+    new_board =  Zmobies.Presenter.to_s
+    IEx.Helpers.clear
+    IO.puts new_board
+    :timer.sleep(100)
+    do_run
+  end
 end
