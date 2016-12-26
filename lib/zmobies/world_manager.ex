@@ -44,23 +44,27 @@ defmodule Zmobies.WorldManager do
   end
 
   # to avoid read contention, we skip GenServer and delegate directly to ETS table.
-  @spec at(%Location{}) :: :vacant | {:occupied, %Being{}}
+  @spec at(%Location{}) :: World.unbounded_lookup
   def at(%Location{} = location) do
     World.at(location)
   end
 
+  @spec insert(%Location{}, Being.character_type) :: {:ok, %Being{}} | World.bounded_lookup
   def insert(%Location{} = location, type) do
     GenServer.call(:world, {:insert, location, type})
   end
 
+  @spec remove(%Location{}) :: :ok
   def remove(%Location{} = location) do
     GenServer.call(:world, {:remove, location})
   end
 
+  @spec move(%Location{}, %Location{}) :: {:ok, %Being{}} | World.bounded_lookup
   def move(%Location{} = from, %Location{} = to) do
     GenServer.call(:world, {:move, from, to})
   end
 
+  @spec place(Being.character_type) :: {:ok, %Being{}} | World.bounded_lookup
   def place(type) do
     GenServer.call(:world, {:place, type})
   end

@@ -1,6 +1,9 @@
 defmodule Zmobies.World do
   alias Zmobies.{Location, Being}
 
+  @type bounded_lookup :: {:occupied, %Being{}} | :vacant | :out_of_bounds
+  @type unbounded_lookup :: {:occupied, %Being{}} | :vacant
+
   def init do
     :ets.new(:world, [:set, :named_table])
   end
@@ -9,6 +12,7 @@ defmodule Zmobies.World do
     quote do: 0 >= unquote(x) or unquote(x) > unquote(x_lim) or 0 >= unquote(y) or unquote(y) > unquote(y_lim)
   end
 
+  @spec at(%Location{}) :: unbounded_lookup
   def at(location) do
     at(location, nil)
   end
@@ -17,6 +21,7 @@ defmodule Zmobies.World do
     when out_of_bounds(x, y, x_lim, y_lim),
     do: :out_of_bounds
 
+  @spec at(%Location{}, nil | {number, number}) :: bounded_lookup
   def at(location, _limits) do
     case :ets.lookup(:world, location) do
       [{^location, being}] -> {:occupied, being}
@@ -24,16 +29,11 @@ defmodule Zmobies.World do
     end
   end
 
-  def all do
-    :ets.match(:world, :'$1')
-    |> List.flatten
-    |> Enum.map(&elem(&1, 1))
-  end
-
   def insert(%Location{x: x, y: y}, _, {x_lim, y_lim})
     when out_of_bounds(x, y, x_lim, y_lim),
     do: :out_of_bounds
 
+  @spec insert(%Location{}, %Being{}, {number, number}) :: {:ok, %Being{}} | bounded_lookup
   def insert(location, being = %Being{}, limits) do
     case :ets.insert_new(:world, {location, being}) do
       true -> {:ok, being}
@@ -53,11 +53,13 @@ defmodule Zmobies.World do
     when out_of_bounds(x, y, x_lim, y_lim),
     do: :out_of_bounds
 
+  @spec remove(%Location{}, {number, number}) :: :ok
   def remove(location, _limits) do
     :ets.delete(:world, location)
     :ok
   end
 
+  @spec move(%Location{}, %Location{}, {number, number}) :: {:ok, %Being{}} | bounded_lookup
   def move(%Location{x: x, y: y}, %Location{x: new_x, y: new_y}, {x_lim, y_lim})
     when out_of_bounds(x, y, x_lim, y_lim)
     or out_of_bounds(new_x, new_y, x_lim, y_lim),
@@ -75,6 +77,7 @@ defmodule Zmobies.World do
     end
   end
 
+  @spec status() :: :empty | :ongoing | Being.character_type
   def status do
     do_status(:world, :ets.first(:world))
   end

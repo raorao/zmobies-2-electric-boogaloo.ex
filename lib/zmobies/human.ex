@@ -1,6 +1,7 @@
 defmodule Zmobies.Human do
-  alias Zmobies.{Being, Movement}
+  alias Zmobies.{Being, Movement, Location}
 
+  @spec act(Enumerable.t, %Being{}) :: {:attack, %Location{}} | {:move, [%Location{}]}
   def act(proximity_stream, being) do
     {:move, run(proximity_stream, being)}
   end
