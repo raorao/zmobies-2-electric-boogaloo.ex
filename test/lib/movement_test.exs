@@ -35,7 +35,7 @@ defmodule MovementTest do
       location = Location.at(x: 1, y: 1)
       {:ok, being} = WorldManager.insert(location, :human)
 
-      Movement.move(being, [])
+      Movement.move([], being)
 
       assert WorldManager.at(location) == {:occupied, being}
     end
@@ -46,7 +46,7 @@ defmodule MovementTest do
       {:ok, being} = WorldManager.insert(location, :human)
       new_location = Location.at(x: 1, y: 2)
 
-      Movement.move(being, [new_location])
+      Movement.move([new_location], being)
 
       moved_being = %{being | :location => new_location }
 
@@ -61,7 +61,7 @@ defmodule MovementTest do
       bad_location = Location.at(x: -1, y: -1)
       new_location = Location.at(x: 1, y: 2)
 
-      Movement.move(being, [bad_location, new_location])
+      Movement.move([bad_location, new_location], being)
 
       moved_being = %{being | :location => new_location }
 
@@ -77,7 +77,7 @@ defmodule MovementTest do
       occupied_location = Location.at(x: 1, y: 2)
       WorldManager.insert(occupied_location, :human)
 
-      Movement.move(being, [bad_location, occupied_location])
+      Movement.move([bad_location, occupied_location], being)
 
       assert WorldManager.at(location) == {:occupied, being}
     end
