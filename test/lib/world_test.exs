@@ -102,4 +102,21 @@ defmodule ZmobiesWorldTest do
       assert World.status == :ongoing
     end
   end
+
+  describe "update" do
+    test "returns not_found if being is not at location" do
+      {:ok, being} = World.insert Location.at(x: 1, y: 1), :zombie, {10, 10}
+      new_being = %{being | :location => Location.at(x: 10, y: 10)}
+      assert World.update(new_being) == :not_found
+      assert World.at(Location.at(x: 1, y: 1), {10, 10}) == {:occupied, being}
+    end
+
+    test "updates the being at its location" do
+      {:ok, being} = World.insert Location.at(x: 1, y: 1), :human, {10, 10}
+
+      {:ok, new_being} = Being.turn(being)
+      assert World.update(new_being) == {:ok, new_being}
+      assert World.at(Location.at(x: 1, y: 1), {10, 10}) == {:occupied, new_being}
+    end
+  end
 end

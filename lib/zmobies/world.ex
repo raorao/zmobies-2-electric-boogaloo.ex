@@ -59,6 +59,14 @@ defmodule Zmobies.World do
     :ok
   end
 
+  @spec update(%Being{}) :: :not_found | {:ok, %Being{}}
+  def update(being = %Being{location: location}) do
+    case :ets.update_element(:world, location, {2, being}) do
+      true -> {:ok, being}
+      false -> :not_found
+    end
+  end
+
   @spec move(%Location{}, %Location{}, {number, number}) :: {:ok, %Being{}} | bounded_lookup
   def move(%Location{x: x, y: y}, %Location{x: new_x, y: new_y}, {x_lim, y_lim})
     when out_of_bounds(x, y, x_lim, y_lim)

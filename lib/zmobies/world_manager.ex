@@ -59,6 +59,11 @@ defmodule Zmobies.WorldManager do
     GenServer.call(:world, {:remove, location})
   end
 
+  @spec update(%Being{}) :: :ok
+  def update(being) do
+    GenServer.cast(:world, {:update, being})
+  end
+
   @spec move(%Location{}, %Location{}) :: {:ok, %Being{}} | World.bounded_lookup
   def move(%Location{} = from, %Location{} = to) do
     GenServer.call(:world, {:move, from, to})
@@ -80,6 +85,10 @@ defmodule Zmobies.WorldManager do
 
   def handle_call({:remove, location}, _, limits) do
     {:reply, World.remove(location, limits), limits}
+  end
+
+  def handle_cast({:update, being}, _limits) do
+    {:noreply, World.update(being)}
   end
 
   def handle_call({:move, from, to}, _, limits) do

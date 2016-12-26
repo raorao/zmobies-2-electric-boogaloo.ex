@@ -1,6 +1,6 @@
 defmodule Zmobies.Character do
   use GenServer
-  alias Zmobies.{Movement, Being, Movement, Action}
+  alias Zmobies.{Movement, Being, Movement, Action, WorldManager}
 
   def start_link(being) do
     GenServer.start_link(
@@ -29,8 +29,11 @@ defmodule Zmobies.Character do
 
   def  handle_cast({:attack, _attacker}, being) do
     case Being.turn(being) do
-      {:ok, new_being} -> {:noreply, new_being}
-      {:error, _} -> {:noreply, being}
+      {:ok, new_being} ->
+        WorldManager.update(new_being)
+        {:noreply, new_being}
+      {:error, _} ->
+        {:noreply, being}
     end
   end
 
