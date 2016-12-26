@@ -1,7 +1,7 @@
-defmodule ZmobiesBeingTest do
+defmodule MovementTest do
   use ExUnit.Case
-  alias Zmobies.{Being, World}
-  doctest Being
+  alias Zmobies.{Being, World, Movement}
+  doctest Movement
 
   describe "proximity_stream" do
     test "returns a stream of rings" do
@@ -11,7 +11,7 @@ defmodule ZmobiesBeingTest do
       zombie = Being.new(:human, x: 4, y: 3)
       World.insert(zombie.location, zombie, nil)
 
-      stream = Being.proximity_stream(human)
+      stream = Movement.proximity_stream(human)
 
       first_ring = stream
       |> Enum.take(1)
