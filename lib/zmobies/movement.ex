@@ -37,4 +37,25 @@ defmodule Zmobies.Movement do
       _ -> move(backups, being)
     end
   end
+
+  def nearest_enemy(proximity_stream, being) do
+    proximity_stream
+    |> Stream.take(10)
+    |> do_nearest_enemy(Being.type(being))
+  end
+
+  defp do_nearest_enemy(stream, being_type) do
+    case Enum.take(stream, 1) do
+      [] -> nil
+      [ring] ->
+        case Enum.find(ring, & is_enemy(&1, being_type)) do
+          {location, {:occupied, enemy}} -> {location, enemy}
+          nil -> do_nearest_enemy(Stream.drop(stream, 1), being_type)
+        end
+    end
+  end
+
+  defp is_enemy({_, :vacant}, _type), do: false
+  defp is_enemy({_, {:occupied, %Being{type: type}}}, type), do: false
+  defp is_enemy({_, {:occupied, %Being{}}}, _type), do: true
 end

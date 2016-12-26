@@ -82,4 +82,54 @@ defmodule MovementTest do
       assert WorldManager.at(location) == {:occupied, being}
     end
   end
+
+  describe "nearest_enemy" do
+    test "returns nil if there are no nearby beings" do
+      WorldManager.start_link(10,10)
+      human_location = Location.at(x: 1, y: 1)
+      {:ok, human} = WorldManager.insert(human_location, :human)
+
+      stream = Movement.proximity_stream(human)
+
+      assert Movement.nearest_enemy(stream, human) == nil
+    end
+
+    test "returns nil if there are no nearby allies" do
+      WorldManager.start_link(10,10)
+      human_location = Location.at(x: 1, y: 1)
+      {:ok, human} = WorldManager.insert(human_location, :human)
+      ally_location = Location.at(x: 1, y: 2)
+      WorldManager.insert(ally_location, :human)
+
+      stream = Movement.proximity_stream(human)
+
+      assert Movement.nearest_enemy(stream, human) == nil
+    end
+
+    test "returns nil if the nearest enemy is too far away" do
+      WorldManager.start_link(100,100)
+      human_location = Location.at(x: 1, y: 1)
+      {:ok, human} = WorldManager.insert(human_location, :human)
+      enemy_location = Location.at(x: 1, y: 99)
+      WorldManager.insert(enemy_location, :human)
+
+      stream = Movement.proximity_stream(human)
+
+      assert Movement.nearest_enemy(stream, human) == nil
+    end
+
+    test "returns the nearest enemy" do
+      WorldManager.start_link(10,10)
+      human_location = Location.at(x: 1, y: 1)
+      {:ok, human} = WorldManager.insert(human_location, :human)
+      near_enemy_location = Location.at(x: 3, y: 3)
+      {:ok, near_enemy} = WorldManager.insert(near_enemy_location, :zombie)
+      far_enemy_location = Location.at(x: 4, y: 4)
+      WorldManager.insert(far_enemy_location, :zombie)
+
+      stream = Movement.proximity_stream(human)
+
+      assert Movement.nearest_enemy(stream, human) == {near_enemy_location, near_enemy}
+    end
+  end
 end
