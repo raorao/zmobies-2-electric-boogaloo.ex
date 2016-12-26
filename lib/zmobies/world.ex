@@ -69,8 +69,11 @@ defmodule Zmobies.World do
     {:occupied, being} = at(from, state)
 
     case insert(to, (%{being | :location => to}), state) do
-      {:ok, _} -> remove(from, state)
-      {:occupied, being} -> {:occupied, being}
+      {:ok, being} ->
+        remove(from, state)
+        {:ok, being}
+      {:occupied, being} ->
+        {:occupied, being}
     end
   end
 

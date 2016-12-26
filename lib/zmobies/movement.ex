@@ -33,7 +33,7 @@ defmodule Zmobies.Movement do
 
   def move([ new_location | backups ], being) do
     case WorldManager.move(being.location, new_location) do
-      :ok -> new_location
+      {:ok, moved_being} -> moved_being
       _ -> move(backups, being)
     end
   end

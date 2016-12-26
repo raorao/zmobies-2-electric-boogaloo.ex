@@ -1,6 +1,6 @@
 defmodule ZmobiesWorldTest do
   use ExUnit.Case
-  alias Zmobies.{World, Location}
+  alias Zmobies.{World, Location, Being}
   doctest World
 
   setup do
@@ -20,13 +20,13 @@ defmodule ZmobiesWorldTest do
   end
 
   test "can insert into vacant entry" do
-    zombie = %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :zombie}
+    zombie = %Being{location: %Location{x: 1, y: 1}, type: :zombie}
     assert World.insert(Location.at(x: 1, y: 1), :zombie, {10, 10}) == {:ok, zombie}
     assert World.at(Location.at(x: 1, y: 1), {10, 10}) == {:occupied, zombie}
   end
 
   test "cannot insert into occupied entry" do
-    zombie = %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :zombie}
+    zombie = %Being{location: %Location{x: 1, y: 1}, type: :zombie}
     World.insert Location.at(x: 1, y: 1), :zombie, {10, 10}
     assert World.insert(Location.at(x: 1, y: 1), :human, {10, 10}) == {:occupied, zombie}
   end
@@ -47,16 +47,16 @@ defmodule ZmobiesWorldTest do
 
   test "can move entry from one location to another" do
     World.insert Location.at(x: 1, y: 1), :zombie, {10, 10}
-    assert World.move(Location.at(x: 1, y: 1), Location.at(x: 1, y: 2), {10, 10}) == :ok
+    assert World.move(Location.at(x: 1, y: 1), Location.at(x: 1, y: 2), {10, 10}) == {:ok, %Being{location: Location.at(x: 1, y: 2), type: :zombie}}
     assert World.at(Location.at(x: 1, y: 1), {10, 10}) == :vacant
 
-    zombie = %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 2}, type: :zombie}
+    zombie = %Being{location: %Location{x: 1, y: 2}, type: :zombie}
     assert World.at(Location.at(x: 1, y: 2), {10, 10}) == {:occupied, zombie}
   end
 
   test "can't move entry to occupied location" do
-    zombie = %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :zombie}
-    human  = %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 2}, type: :human}
+    zombie = %Being{location: %Location{x: 1, y: 1}, type: :zombie}
+    human  = %Being{location: %Location{x: 1, y: 2}, type: :human}
 
     World.insert Location.at(x: 1, y: 1), :zombie, {10, 10}
     World.insert Location.at(x: 1, y: 2), :human, {10, 10}
@@ -71,8 +71,8 @@ defmodule ZmobiesWorldTest do
   end
 
   test "can return all keys" do
-    zombie = %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :zombie}
-    human  = %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 2}, type: :human}
+    zombie = %Being{location: %Location{x: 1, y: 1}, type: :zombie}
+    human  = %Being{location: %Location{x: 1, y: 2}, type: :human}
 
     World.insert Location.at(x: 1, y: 1), :zombie, {10, 10}
     World.insert Location.at(x: 1, y: 2), :human, {10, 10}
