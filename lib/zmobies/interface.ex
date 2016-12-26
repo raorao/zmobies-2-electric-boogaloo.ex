@@ -1,5 +1,5 @@
 defmodule Zmobies.Interface do
-  alias Zmobies.{WorldSupervisor, WorldManager, Interface, Being, Location, GameManager}
+  alias Zmobies.{WorldSupervisor, WorldManager, Human, GameManager, Zombie}
 
   def start do
     start(x: 40, y: 40, humans: 50, zombies: 30)
@@ -11,7 +11,10 @@ defmodule Zmobies.Interface do
 
     human_messages = if humans > 0 do
       for _ <- 1..humans do
-        WorldManager.place(:human)
+        case WorldManager.place(:human) do
+          {:ok, being} -> Human.start_link(being)
+          {:occupied, _} -> WorldManager.place(:human)
+        end
       end
     else
       []
@@ -19,7 +22,10 @@ defmodule Zmobies.Interface do
 
     zombie_messages = if zombies > 0 do
        for _ <- 1..zombies do
-        WorldManager.place(:zombie)
+        case WorldManager.place(:zombie) do
+          {:ok, being} -> Zombie.start_link(being)
+          {:occupied, _} -> WorldManager.place(:zombie)
+        end
       end
     else
       []
@@ -28,26 +34,9 @@ defmodule Zmobies.Interface do
     human_messages ++ zombie_messages
   end
 
-  def tick do
-    Zmobies.WorldManager.all
-    |> Enum.map( &Task.async(Interface, :random_move, [&1]) )
-    |> Enum.map(&Task.await(&1))
-  end
-
-  def random_move(being = %Being{}) do
-    old = being.location
-    new = Location.at(x: (Being.x(being) + additive), y: (Being.y(being) + additive))
-    Zmobies.WorldManager.move(old, new)
-  end
-
-  def additive do
-    :rand.uniform(3) - 2
-  end
-
   def run do
     start
     for _ <- 1..100 do
-      tick
       new_board =  Zmobies.Presenter.to_s
       IEx.Helpers.clear
       IO.puts new_board

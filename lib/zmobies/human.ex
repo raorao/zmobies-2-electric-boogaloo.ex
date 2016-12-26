@@ -1,4 +1,4 @@
-defmodule Zmobies.Zombie do
+defmodule Zmobies.Human do
   use GenServer
   alias Zmobies.{Movement, Being, Movement}
 
@@ -35,11 +35,11 @@ defmodule Zmobies.Zombie do
 
   defp calculate_next_move(proximity_stream, being = %Being{location: current_location}) do
     nearest_enemy = proximity_stream
-    |> Stream.take(3)
+    |> Stream.take(5)
     |> Movement.nearest_enemy(being)
 
     case nearest_enemy do
-      {enemy_location, _enemy} -> Movement.towards(enemy_location, current_location)
+      {enemy_location, _enemy} -> Movement.away_from(enemy_location, current_location)
       nil -> []
     end
   end
