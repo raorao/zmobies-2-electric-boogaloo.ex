@@ -20,23 +20,32 @@ defmodule Zmobies.Being do
 
   def type(%Being{type: type}), do: type
 
-  def visible_locations(_being, range: 0), do: []
-
-  def visible_locations(%Being{location: current_location}, range: range) do
-    %Location{x: current_x, y: current_y} = current_location
-    x_range = (current_x - range)..(current_x + range)
-    y_range = (current_y - range)..(current_y + range)
-
-    (for x <- x_range, y <-  y_range, do: Location.at(x: x, y: y))
-    |> Enum.sort_by(fn(location) -> Location.distance(current_location, location) end)
-    |> Enum.drop(1)
+  def proximity_stream(being = %Being{}) do
+    Stream.unfold({1, being.location}, &next_ring/1)
   end
 
-  def proximity_stream(_, range: 0), do: Stream.map([], & &1)
+  defp next_ring({range, location = %Location{x: current_x, y: current_y}}) do
+    top = for x <- (current_x - range)..(current_x + range) do
+      Location.at x: x, y: (current_y + range)
+    end
 
-  def proximity_stream(being = %Being{}, range: range) do
-    visible_locations(being, range: range)
-    |> Stream.map(&WorldManager.at/1)
+    bottom = for x <- (current_x - range)..(current_x + range) do
+      Location.at x: x, y: (current_y - range)
+    end
+
+    left = for y <- (current_y - (range - 1))..(current_y + (range - 1)) do
+      Location.at x: (current_x - range), y: y
+    end
+
+    right = for y <- (current_y - (range - 1))..(current_y + (range - 1)) do
+      Location.at x: (current_x + range), y: y
+    end
+
+    ring = (top ++ bottom ++ left ++ right)
+    |> Enum.shuffle
+    |> Enum.map(& {&1, WorldManager.at(&1)})
+
+    {ring, {range + 1, location}}
   end
 
   defimpl String.Chars, for: Zmobies.Being do
