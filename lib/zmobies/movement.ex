@@ -28,4 +28,13 @@ defmodule Zmobies.Movement do
 
     {ring, {range + 1, location}}
   end
+
+  def move(being, []), do: being.location
+
+  def move(being, [ new_location | backups ]) do
+    case WorldManager.move(being.location, new_location) do
+      :ok -> new_location
+      _ -> move(being, backups)
+    end
+  end
 end
