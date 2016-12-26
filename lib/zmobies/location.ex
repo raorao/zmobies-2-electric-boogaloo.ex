@@ -1,6 +1,4 @@
 defmodule Zmobies.Location do
-  alias Zmobies.Location
-
   @enforce_keys [:x, :y]
   defstruct [:x, :y]
 
