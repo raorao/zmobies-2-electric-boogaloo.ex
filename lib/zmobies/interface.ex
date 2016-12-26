@@ -28,11 +28,6 @@ defmodule Zmobies.Interface do
     human_messages ++ zombie_messages
   end
 
-  def print do
-    Zmobies.Presenter.to_s
-    |> IO.puts
-  end
-
   def tick do
     Zmobies.WorldManager.all
     |> Enum.map( &Task.async(Interface, :random_move, [&1]) )
@@ -53,9 +48,10 @@ defmodule Zmobies.Interface do
     start
     for _ <- 1..100 do
       tick
+      new_board =  Zmobies.Presenter.to_s
       IEx.Helpers.clear
-      print
-      :timer.sleep(1000)
+      IO.puts new_board
+      :timer.sleep(100)
     end
   end
 
