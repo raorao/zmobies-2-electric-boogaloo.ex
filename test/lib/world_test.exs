@@ -70,15 +70,6 @@ defmodule ZmobiesWorldTest do
     assert World.move(Location.at(x: 1, y: 11), Location.at(x: 1, y: 1), {10, 10}) == :out_of_bounds
   end
 
-  test "can return all keys" do
-    zombie = %Being{location: %Location{x: 1, y: 1}, type: :zombie}
-    human  = %Being{location: %Location{x: 1, y: 2}, type: :human}
-
-    World.insert Location.at(x: 1, y: 1), :zombie, {10, 10}
-    World.insert Location.at(x: 1, y: 2), :human, {10, 10}
-    assert (World.all |> Enum.sort) == [zombie, human]
-  end
-
   describe "status" do
     test "returns :empty if empty" do
       assert World.status == :empty
