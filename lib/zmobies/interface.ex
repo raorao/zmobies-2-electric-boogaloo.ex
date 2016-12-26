@@ -1,5 +1,5 @@
 defmodule Zmobies.Interface do
-  alias Zmobies.{WorldSupervisor, WorldManager, Interface, Being, Location}
+  alias Zmobies.{WorldSupervisor, WorldManager, Interface, Being, Location, GameManager}
 
   def start do
     start(x: 40, y: 40, humans: 50, zombies: 30)
@@ -7,6 +7,7 @@ defmodule Zmobies.Interface do
 
   def start(x: x, y: y, humans: humans, zombies: zombies) do
     WorldSupervisor.start_child({x, y})
+    GameManager.start_link
 
     human_messages = if humans > 0 do
       for _ <- 1..humans do
