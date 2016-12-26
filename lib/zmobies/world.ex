@@ -73,4 +73,29 @@ defmodule Zmobies.World do
       {:occupied, being} -> {:occupied, being}
     end
   end
+
+  def status do
+    do_status(:world, :ets.first(:world))
+  end
+
+  defp do_status(_, :"$end_of_table"), do: :empty
+
+  defp do_status(table, key) do
+    case at(key) do
+      {:occupied, being} -> do_status(table, key, being.type)
+      :vacant -> do_status(table, :ets.next(table, key))
+    end
+  end
+
+  defp do_status(table, key, target_type) do
+    case :ets.next(table, key) do
+      :'$end_of_table' -> target_type
+      next ->
+        case at(next) do
+          {:occupied, %Being{type: ^target_type}} -> do_status(table, next, target_type)
+          {:occupied, _} -> :ongoing
+          :vacant -> do_status(table, next, target_type)
+        end
+    end
+  end
 end

@@ -78,4 +78,28 @@ defmodule ZmobiesWorldTest do
     World.insert Location.at(x: 1, y: 2), :human, {10, 10}
     assert (World.all |> Enum.sort) == [zombie, human]
   end
+
+  describe "status" do
+    test "returns :empty if empty" do
+      assert World.status == :empty
+    end
+
+    test "returns :human if only humans are on the board" do
+      World.insert(%Location{x: 1, y: 1}, :human, nil)
+      World.insert(%Location{x: 4, y: 4}, :human, nil)
+      assert World.status == :human
+    end
+
+    test "returns :zombie if only zombies are on the board" do
+      World.insert(%Location{x: 1, y: 1}, :zombie, nil)
+      World.insert(%Location{x: 4, y: 4}, :zombie, nil)
+      assert World.status == :zombie
+    end
+
+    test "returns :ongoing if there is a mix of characters on the board" do
+      World.insert(%Location{x: 1, y: 1}, :zombie, nil)
+      World.insert(%Location{x: 4, y: 4}, :human, nil)
+      assert World.status == :ongoing
+    end
+  end
 end
