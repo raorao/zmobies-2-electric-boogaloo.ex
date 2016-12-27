@@ -23,6 +23,10 @@ defmodule Zmobies.Character do
     GenServer.cast(via_tuple(victim), {:attack, attacker})
   end
 
+  def read(being) do
+    GenServer.call(via_tuple(being), :read)
+  end
+
   def via_tuple(being) do
     {:via, :gproc, {:n, :l, being.uuid}}
   end
@@ -35,6 +39,10 @@ defmodule Zmobies.Character do
       {:error, _} ->
         {:noreply, being}
     end
+  end
+
+  def handle_call(:read, _, state) do
+    {:reply, state, state}
   end
 
   def handle_info(:move, being) do
