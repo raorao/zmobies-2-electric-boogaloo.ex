@@ -87,7 +87,11 @@ defmodule Zmobies.World do
 
   @spec status() :: :empty | :ongoing | Being.character_type
   def status do
-    do_status(:world, :ets.first(:world))
+    :ets.safe_fixtable(:world, true)
+    status = do_status(:world, :ets.first(:world))
+    :ets.safe_fixtable(:world, false)
+
+    status
   end
 
   defp do_status(_, :"$end_of_table"), do: :empty

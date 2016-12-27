@@ -24,7 +24,11 @@ defmodule Zmobies.Presenter do
   end
 
   defp generate_sorted(table) do
-    do_generate_sorted(table, :ets.first(table), %{})
+    :ets.safe_fixtable(:world, true)
+    sorted = do_generate_sorted(table, :ets.first(table), %{})
+    :ets.safe_fixtable(:world, false)
+
+    sorted
   end
 
   defp do_generate_sorted(_table, :"$end_of_table", result), do: result
