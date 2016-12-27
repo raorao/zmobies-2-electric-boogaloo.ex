@@ -26,10 +26,7 @@ defmodule Zmobies.Interface do
 
     human_messages = if humans > 0 do
       for _ <- 1..humans do
-        case WorldManager.place(:human) do
-          {:ok, being} -> Character.start_link(being)
-          {:occupied, _} -> WorldManager.place(:human)
-        end
+        Character.start_link WorldManager.place(:human)
       end
     else
       []
@@ -37,10 +34,7 @@ defmodule Zmobies.Interface do
 
     zombie_messages = if zombies > 0 do
        for _ <- 1..zombies do
-        case WorldManager.place(:zombie) do
-          {:ok, being} -> Character.start_link(being)
-          {:occupied, _} -> WorldManager.place(:zombie)
-        end
+        Character.start_link WorldManager.place(:zombie)
       end
     else
       []

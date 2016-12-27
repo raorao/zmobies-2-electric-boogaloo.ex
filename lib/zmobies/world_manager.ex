@@ -96,12 +96,20 @@ defmodule Zmobies.WorldManager do
     {:reply, World.move(from, to, limits), limits}
   end
 
-  def handle_call({:place, type}, _, limits = {x_lim, y_lim}) do
+  def handle_call({:place, type}, _, limits) do
+    {:reply, do_place(type, limits), limits}
+  end
+
+  defp do_place(type, limits = {x_lim, y_lim}) do
+
     location = Location.at(x: :rand.uniform(x_lim ), y: :rand.uniform(y_lim))
     being = type
     |> Being.new(location)
     |> Being.set_uuid
 
-    {:reply, World.insert(location, being, limits), limits}
+    case World.insert(location, being, limits) do
+      {:ok, being} -> being
+      {:occupied, _} -> do_place(type, limits)
+    end
   end
 end
