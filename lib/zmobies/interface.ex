@@ -39,10 +39,14 @@ defmodule Zmobies.Interface do
     do_run
   end
 
-  def do_run do
+  def print do
     new_board =  Zmobies.Presenter.to_s
     IEx.Helpers.clear
     IO.puts new_board
+  end
+
+  def do_run do
+    print
     :timer.sleep(100)
     do_run
   end
