@@ -1,5 +1,5 @@
 defmodule Zmobies.Action do
-  alias Zmobies.{WorldManager, Location, Being}
+  alias Zmobies.{WorldManager, Location, Being, Character}
 
   def move([], being), do: being
 
@@ -14,7 +14,7 @@ defmodule Zmobies.Action do
   @spec move(%Being{}, %Location{}) :: %Being{}
   def attack(attacker, location) do
     case WorldManager.at(location) do
-      {:occupied, victim} -> attack(attacker, victim.location)
+      {:occupied, victim} -> Character.attack(attacker, victim)
       :vacant -> nil
     end
 

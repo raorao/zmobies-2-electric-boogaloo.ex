@@ -79,8 +79,9 @@ defmodule Zmobies.WorldManager do
     {:noreply, limits}
   end
 
-  def handle_cast({:update, being}, _limits) do
-    {:noreply, World.update(being)}
+  def handle_cast({:update, being}, limits) do
+    World.update(being)
+    {:noreply, limits}
   end
 
   def handle_call({:insert, location, type}, _, limits) do
