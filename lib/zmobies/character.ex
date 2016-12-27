@@ -31,7 +31,7 @@ defmodule Zmobies.Character do
     {:via, :gproc, {:n, :l, being.uuid}}
   end
 
-  def  handle_cast({:attack, _attacker}, being) do
+  def handle_cast({:attack, _attacker}, being) do
     case Being.turn(being) do
       {:ok, new_being} ->
         WorldManager.update(new_being)
