@@ -53,8 +53,8 @@ defmodule Zmobies.Being do
   defimpl String.Chars, for: Zmobies.Being do
     def to_string(%Being{type: type}) do
       case type do
-        :zombie -> "Z"
-        :human  -> "H"
+        :zombie -> "#{IO.ANSI.red()}Z"
+        :human  -> "#{IO.ANSI.cyan()}H"
       end
     end
   end
