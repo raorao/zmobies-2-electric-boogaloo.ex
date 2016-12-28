@@ -50,7 +50,7 @@ defmodule Zmobies.Interface do
   end
 
   defp print do
-    new_board =  Zmobies.Presenter.to_s
+    new_board =  Zmobies.Presenter.to_s(colors: true)
     IEx.Helpers.clear
     IO.puts new_board
   end

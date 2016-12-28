@@ -36,25 +36,35 @@ defmodule Zmobies.Being do
     {:ok, %{being | type: :zombie, speed: generate_speed(:zombie) } }
   end
 
+  @spec generate_health() :: number
+  defp generate_health do
+    generate_stat(50)
+  end
+
   @spec generate_speed(%Being{}) :: number
   defp generate_speed(:human) do
-    generate_speed(60)
+    generate_stat(60)
   end
 
   defp generate_speed(:zombie) do
-    generate_speed(30)
+    generate_stat(30)
   end
 
-  @spec generate_speed(number) :: number
-  defp generate_speed(average) do
+  @spec generate_stat(number) :: number
+  defp generate_stat(average) do
     average + (:rand.uniform(50) - 25)
   end
 
-  defimpl String.Chars, for: Zmobies.Being do
-    def to_string(%Being{type: type}) do
+  def to_s(%Being{type: type}, colors: colors) do
+    if colors do
       case type do
         :zombie -> "#{IO.ANSI.red()}Z"
         :human  -> "#{IO.ANSI.cyan()}H"
+      end
+    else
+      case type do
+        :zombie -> "Z"
+        :human  -> "H"
       end
     end
   end

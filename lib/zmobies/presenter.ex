@@ -1,7 +1,7 @@
 defmodule Zmobies.Presenter do
   alias Zmobies.{Being, World}
 
-  def to_s do
+  def to_s(colors: colors) do
     sorted = :world
     |> generate_sorted
     |> Enum.to_list
@@ -18,7 +18,7 @@ defmodule Zmobies.Presenter do
 
         (1..y_max)
         |> Enum.map(&find_row(sorted, &1))
-        |> Enum.map(&row_to_s/1)
+        |> Enum.map(& row_to_s(&1, colors))
         |> Enum.join("\n")
     end
   end
@@ -56,16 +56,16 @@ defmodule Zmobies.Presenter do
     Enum.find(rows, fn({y, _}) -> y == target end)
   end
 
-  defp row_to_s(nil), do: ""
+  defp row_to_s(nil, _colors), do: ""
 
-  defp row_to_s({_, row}) do
+  defp row_to_s({_, row}, colors) do
     x_max = row
     |> List.last
     |> Being.x
 
     (1..x_max)
     |> Enum.map(&find_being(row, &1))
-    |> Enum.map(&being_to_string/1)
+    |> Enum.map(& being_to_string(&1, colors))
     |> Enum.join(" ")
   end
 
@@ -73,6 +73,6 @@ defmodule Zmobies.Presenter do
     Enum.find(row, fn(being) -> Being.x(being) == target end)
   end
 
-  def being_to_string(nil),   do: " "
-  def being_to_string(being), do: to_string(being)
+  def being_to_string(nil, _colors),   do: " "
+  def being_to_string(being, colors), do: Being.to_s(being, colors: colors)
 end
