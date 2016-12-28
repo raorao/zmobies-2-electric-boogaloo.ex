@@ -11,7 +11,7 @@ defmodule Zmobies.Action do
     end
   end
 
-  @spec move(%Being{}, %Location{}) :: %Being{}
+  @spec attack(%Being{}, %Location{}) :: %Being{}
   def attack(attacker, location) do
     case WorldManager.at(location) do
       {:occupied, victim} -> Character.attack(attacker, victim)
