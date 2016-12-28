@@ -31,7 +31,7 @@ defmodule MovementTest do
 
   describe "nearest_enemy" do
     test "returns nil if there are no nearby beings" do
-      WorldManager.start_link(10,10)
+      WorldManager.start_link({10,10},{0,0})
       human_location = Location.at(x: 1, y: 1)
       {:ok, human} = WorldManager.insert(human_location, :human)
 
@@ -41,7 +41,7 @@ defmodule MovementTest do
     end
 
     test "returns nil if there are no nearby allies" do
-      WorldManager.start_link(10,10)
+      WorldManager.start_link({10,10},{0,0})
       human_location = Location.at(x: 1, y: 1)
       {:ok, human} = WorldManager.insert(human_location, :human)
       ally_location = Location.at(x: 1, y: 2)
@@ -53,7 +53,7 @@ defmodule MovementTest do
     end
 
     test "returns nil if the nearest enemy is too far away" do
-      WorldManager.start_link(100,100)
+      WorldManager.start_link({100,100},{0,0})
       human_location = Location.at(x: 1, y: 1)
       {:ok, human} = WorldManager.insert(human_location, :human)
       enemy_location = Location.at(x: 1, y: 99)
@@ -65,7 +65,7 @@ defmodule MovementTest do
     end
 
     test "returns the nearest enemy" do
-      WorldManager.start_link(10,10)
+      WorldManager.start_link({10,10},{0,0})
       human_location = Location.at(x: 1, y: 1)
       {:ok, human} = WorldManager.insert(human_location, :human)
       near_enemy_location = Location.at(x: 3, y: 3)
@@ -81,7 +81,7 @@ defmodule MovementTest do
 
   describe "towards" do
     test "returns a list of possible moves that do not move away from target (0 directions)" do
-      WorldManager.start_link(10,10)
+      WorldManager.start_link({10,10},{0,0})
       location = Location.at(x: 1, y: 1)
       WorldManager.insert(location, :human)
       target_location = Location.at(x: 1, y: 1)
@@ -90,7 +90,7 @@ defmodule MovementTest do
     end
 
     test "returns a list of possible moves that do not move away from target (1 direction)" do
-      WorldManager.start_link(10,10)
+      WorldManager.start_link({10,10},{0,0})
       location = Location.at(x: 1, y: 1)
       WorldManager.insert(location, :human)
       target_location = Location.at(x: 1, y: 3)
@@ -105,7 +105,7 @@ defmodule MovementTest do
     end
 
     test "returns a list of possible moves that do not move away from target (2 directions)" do
-      WorldManager.start_link(10,10)
+      WorldManager.start_link({10,10},{0,0})
       location = Location.at(x: 1, y: 1)
       WorldManager.insert(location, :human)
       target_location = Location.at(x: 3, y: 3)
@@ -125,7 +125,7 @@ defmodule MovementTest do
 
   describe "away_from" do
     test "returns a list of possible moves that do not move towards target (0 directions)" do
-      WorldManager.start_link(10,10)
+      WorldManager.start_link({10,10},{0,0})
       location = Location.at(x: 2, y: 2)
       WorldManager.insert(location, :human)
       target_location = Location.at(x: 2, y: 2)
@@ -145,7 +145,7 @@ defmodule MovementTest do
     end
 
     test "returns a list of possible moves that do not move towards target (1 direction)" do
-      WorldManager.start_link(10,10)
+      WorldManager.start_link({10,10},{0,0})
       location = Location.at(x: 2, y: 2)
       WorldManager.insert(location, :human)
       target_location = Location.at(x: 3, y: 2)
@@ -164,7 +164,7 @@ defmodule MovementTest do
     end
 
     test "returns a list of possible moves that do not move towards target (2 directions)" do
-      WorldManager.start_link(10,10)
+      WorldManager.start_link({10,10},{0,0})
       location = Location.at(x: 2, y: 2)
       WorldManager.insert(location, :human)
       target_location = Location.at(x: 3, y: 3)

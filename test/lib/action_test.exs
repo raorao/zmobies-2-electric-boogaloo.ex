@@ -5,7 +5,7 @@ defmodule ActionTest do
 
   describe "move" do
     test "does not move given an empty list" do
-      WorldManager.start_link(10, 10)
+      WorldManager.start_link({10,10},{0,0})
       location = Location.at(x: 1, y: 1)
       {:ok, being} = WorldManager.insert(location, :human)
 
@@ -15,7 +15,7 @@ defmodule ActionTest do
     end
 
     test "moves to first location provided if valid" do
-      WorldManager.start_link(10, 10)
+      WorldManager.start_link({10,10},{0,0})
       location = Location.at(x: 1, y: 1)
       {:ok, being} = WorldManager.insert(location, :human)
       new_location = Location.at(x: 1, y: 2)
@@ -29,7 +29,7 @@ defmodule ActionTest do
     end
 
     test "moves to second location provided if first is invalid" do
-      WorldManager.start_link(10, 10)
+      WorldManager.start_link({10,10},{0,0})
       location = Location.at(x: 1, y: 1)
       {:ok, being} = WorldManager.insert(location, :human)
       bad_location = Location.at(x: -1, y: -1)
@@ -44,7 +44,7 @@ defmodule ActionTest do
     end
 
     test "does not move if all locations are invalid" do
-      WorldManager.start_link(10, 10)
+      WorldManager.start_link({10,10},{0,0})
       location = Location.at(x: 1, y: 1)
       {:ok, being} = WorldManager.insert(location, :human)
       bad_location = Location.at(x: -1, y: -1)

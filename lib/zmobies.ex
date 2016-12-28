@@ -7,9 +7,7 @@ defmodule Zmobies do
     import Supervisor.Spec, warn: false
 
     # Define workers and child supervisors to be supervised
-    children = [
-      supervisor(Zmobies.WorldSupervisor, []),
-    ]
+    children = []
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options

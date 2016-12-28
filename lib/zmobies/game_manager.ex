@@ -1,35 +1,27 @@
 defmodule Zmobies.GameManager do
-  use GenServer
-  alias Zmobies.{World}
+  use Supervisor
+  alias Zmobies.{WorldManager, CharacterSupervisor, StatsManager, Interface}
 
-  def start_link do
-    GenServer.start_link(
-      __MODULE__,
-      :ongoing,
-      name: :game_manager
-    )
+  def start_link(x: x, y: y, humans: humans, zombies: zombies) do
+    Supervisor.start_link(__MODULE__, {x, y, humans, zombies}, name: :world_supervisor)
   end
 
-  def init(status) do
-    send(self, :check_status)
-    {:ok, status}
+  def start_link do
+    start_link(x: 40, y: 40, humans: 400, zombies: 15)
   end
 
   def stop do
-    GenServer.stop(:game_manager)
+    Supervisor.stop(:world_supervisor)
   end
 
-  def read do
-    GenServer.call(:game_manager, :read)
-  end
+  def init({x, y, humans, zombies}) do
+    children = [
+      supervisor(CharacterSupervisor, []),
+      worker(WorldManager, [{x, y}, {humans, zombies}], restart: :transient),
+      worker(StatsManager, [], restart: :transient),
+      worker(Interface, [], restart: :transient)
+    ]
 
-  def handle_info(:check_status, _current_status) do
-    new_status = World.status
-
-    if new_status == :ongoing do
-      send(self, :check_status)
-    end
-
-    {:noreply, new_status}
+    supervise(children, strategy: :one_for_one)
   end
 end

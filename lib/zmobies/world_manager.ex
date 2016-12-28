@@ -1,13 +1,13 @@
 defmodule Zmobies.WorldManager do
   use GenServer
-  alias Zmobies.{World, Being}
+  alias Zmobies.{World, Being, CharacterSupervisor}
 
   @doc ~S"""
     Module for managing global locations of beings.
 
     ## Examples
 
-        iex> Zmobies.WorldManager.start_link(10, 10)
+        iex> Zmobies.WorldManager.start_link({10,10},{0,0})
         iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 1))
         :vacant
         iex> Zmobies.WorldManager.insert(Zmobies.Location.at(x: 1, y: 1), :human)
@@ -26,16 +26,17 @@ defmodule Zmobies.WorldManager do
 
   alias Zmobies.Location
 
-  def start_link(x_lim, y_lim) do
+  def start_link(limits, beings) do
     GenServer.start_link(
       __MODULE__,
-      {x_lim, y_lim},
+      {limits, beings},
       name: :world
     )
   end
 
-  def init(limits) do
+  def init({limits, beings}) do
     send(self, :initialize_table)
+    send(self, {:place, beings})
     {:ok, limits}
   end
 
@@ -69,9 +70,9 @@ defmodule Zmobies.WorldManager do
     GenServer.call(:world, {:move, from, to})
   end
 
-  @spec place(Being.character_type) :: {:ok, %Being{}} | World.bounded_lookup
-  def place(type) do
-    GenServer.call(:world, {:place, type})
+  @spec insert_random(Being.character_type) :: {:ok, %Being{}} | World.bounded_lookup
+  def insert_random(type) do
+    GenServer.cast(:world, {:insert_random, type})
   end
 
   def handle_info(:initialize_table, limits) do
@@ -79,8 +80,25 @@ defmodule Zmobies.WorldManager do
     {:noreply, limits}
   end
 
+  def handle_info({:place, {humans, zombies}}, limits) do
+    Stream.repeatedly(fn -> :zombie end)
+    |> Enum.take(zombies)
+    |> Enum.each(&insert_random/1)
+
+    Stream.repeatedly(fn -> :human end)
+    |> Enum.take(humans)
+    |> Enum.each(&insert_random/1)
+
+    {:noreply, limits}
+  end
+
   def handle_cast({:update, being}, limits) do
     World.update(being)
+    {:noreply, limits}
+  end
+
+  def handle_cast({:insert_random, type}, limits) do
+    do_insert_random(type, limits)
     {:noreply, limits}
   end
 
@@ -96,20 +114,15 @@ defmodule Zmobies.WorldManager do
     {:reply, World.move(from, to, limits), limits}
   end
 
-  def handle_call({:place, type}, _, limits) do
-    {:reply, do_place(type, limits), limits}
-  end
-
-  defp do_place(type, limits = {x_lim, y_lim}) do
-
+  defp do_insert_random(type, limits = {x_lim, y_lim}) do
     location = Location.at(x: :rand.uniform(x_lim ), y: :rand.uniform(y_lim))
     being = type
     |> Being.new(location)
     |> Being.set_uuid
 
     case World.insert(location, being, limits) do
-      {:ok, being} -> being
-      {:occupied, _} -> do_place(type, limits)
+      {:ok, being} -> CharacterSupervisor.start_child(being)
+      {:occupied, _} -> do_insert_random(type, limits)
     end
   end
 end
