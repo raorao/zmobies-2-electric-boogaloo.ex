@@ -1,5 +1,5 @@
 defmodule Zmobies.Movement do
-  alias Zmobies.{Location, WorldManager, Being, Zombie}
+  alias Zmobies.{Location, WorldManager, Being}
 
   @spec proximity_stream(%Being{}) :: Enumerable.t
   def proximity_stream(being = %Being{}) do
