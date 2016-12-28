@@ -46,7 +46,7 @@ defmodule Zmobies.Interface do
   end
 
   defp schedule_next_print do
-    Process.send_after(self, :print, 200)
+    Process.send_after(self, :print, 10)
   end
 
   defp print do
