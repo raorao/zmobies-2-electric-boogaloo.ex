@@ -70,7 +70,6 @@ defmodule Zmobies.WorldManager do
     GenServer.call(:world, {:move, from, to})
   end
 
-  @spec insert_random(Being.character_type) :: {:ok, %Being{}} | World.bounded_lookup
   def insert_random(type) do
     GenServer.cast(:world, {:insert_random, type})
   end
