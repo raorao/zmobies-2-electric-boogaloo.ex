@@ -21,7 +21,7 @@ defmodule Zmobies.Zombie do
     |> Movement.nearest_enemy(being)
 
     case nearest_enemy do
-      {enemy_location, _} -> Movement.away_from(enemy_location, current_location)
+      {enemy_location, _} -> Movement.towards(enemy_location, current_location)
       nil -> Movement.random(current_location)
     end
   end
