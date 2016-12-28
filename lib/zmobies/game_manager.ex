@@ -6,10 +6,6 @@ defmodule Zmobies.GameManager do
     Supervisor.start_link(__MODULE__, {x, y, humans, zombies}, name: :world_supervisor)
   end
 
-  def start_link do
-    start_link(x: 40, y: 40, humans: 400, zombies: 15)
-  end
-
   def finish do
     Supervisor.terminate_child(:world_supervisor, :character_supervisor)
   end
