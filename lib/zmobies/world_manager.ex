@@ -1,6 +1,6 @@
 defmodule Zmobies.WorldManager do
   use GenServer
-  alias Zmobies.{World, Being, CharacterSupervisor}
+  alias Zmobies.{World, Being, CharacterSupervisor, StatsManager}
 
   @doc ~S"""
     Module for managing global locations of beings.
@@ -89,6 +89,15 @@ defmodule Zmobies.WorldManager do
     |> Enum.take(humans)
     |> Enum.each(&insert_random/1)
 
+    if humans > 0 and zombies > 0 do
+      send(self, :start_stats)
+    end
+
+    {:noreply, limits}
+  end
+
+  def handle_info(:start_stats, limits) do
+    StatsManager.start
     {:noreply, limits}
   end
 
