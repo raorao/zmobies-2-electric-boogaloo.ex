@@ -126,7 +126,7 @@ defmodule Zmobies.WorldManager do
     location = Location.at(x: :rand.uniform(x_lim ), y: :rand.uniform(y_lim))
     being = type
     |> Being.new(location)
-    |> Being.set_uuid
+    |> Being.set_traits
 
     case World.insert(location, being, limits) do
       {:ok, being} -> CharacterSupervisor.start_child(being)

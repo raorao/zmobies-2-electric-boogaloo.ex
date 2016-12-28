@@ -1,6 +1,6 @@
 defmodule Zmobies.Being do
   @enforce_keys [:location, :type]
-  defstruct [:location, :type, :uuid]
+  defstruct [:location, :type, :uuid, :speed]
   alias Zmobies.{Location, Being}
 
   @type character_type :: :human | :zombie
@@ -15,9 +15,9 @@ defmodule Zmobies.Being do
     %__MODULE__{location: location, type: type}
   end
 
-  @spec set_uuid(%Being{}) :: %Being{uuid: String.t}
-  def set_uuid(being = %Being{}) do
-    %{ being | :uuid => UUID.uuid1() }
+  @spec set_traits(%Being{}) :: %Being{uuid: String.t, speed: number}
+  def set_traits(being = %Being{}) do
+    %{ being | :uuid => UUID.uuid1(), :speed => generate_speed(type(being)) }
   end
 
   @spec x(%Being{}) :: number
@@ -31,8 +31,23 @@ defmodule Zmobies.Being do
 
   @spec turn(%Being{}) :: {:error, :already_turned} | {:ok, %Being{}}
   def turn(%Being{type: :zombie}), do: {:error, :already_turned}
+
   def turn(being = %Being{type: :human}) do
-    {:ok, %{being | type: :zombie} }
+    {:ok, %{being | type: :zombie, speed: generate_speed(:zombie) } }
+  end
+
+  @spec generate_speed(%Being{}) :: number
+  defp generate_speed(:human) do
+    generate_speed(60)
+  end
+
+  defp generate_speed(:zombie) do
+    generate_speed(30)
+  end
+
+  @spec generate_speed(number) :: number
+  defp generate_speed(average) do
+    average + (:rand.uniform(50) - 25)
   end
 
   defimpl String.Chars, for: Zmobies.Being do

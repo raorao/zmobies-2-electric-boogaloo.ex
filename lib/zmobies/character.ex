@@ -11,7 +11,7 @@ defmodule Zmobies.Character do
   end
 
   def init(being) do
-    schedule_next_move
+    schedule_next_move(being)
     {:ok, being}
   end
 
@@ -55,7 +55,7 @@ defmodule Zmobies.Character do
       {:attack, enemy_location} -> Action.attack(being, enemy_location)
     end
 
-    schedule_next_move
+    schedule_next_move(being)
 
     {:noreply, new_being}
   end
@@ -67,7 +67,8 @@ defmodule Zmobies.Character do
     end
   end
 
-  defp schedule_next_move do
-    Process.send_after(self, :move, 200)
+  defp schedule_next_move(%Being{speed: speed}) do
+    interval = 400 - (3 * speed)
+    Process.send_after(self, :move, interval)
   end
 end
