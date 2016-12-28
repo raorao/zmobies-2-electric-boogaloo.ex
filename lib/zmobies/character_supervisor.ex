@@ -10,8 +10,10 @@ defmodule Zmobies.CharacterSupervisor do
     Supervisor.start_child(:character_supervisor, [being])
   end
 
-  def stop do
-    Supervisor.stop(:character_supervisor)
+  def stop_children do
+    Supervisor.which_children(:character_supervisor)
+    |> Enum.map(& elem(&1, 1))
+    |> Enum.map(& Supervisor.terminate_child(:character_supervisor, &1))
   end
 
   def init(_) do

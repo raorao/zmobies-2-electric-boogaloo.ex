@@ -12,10 +12,6 @@ defmodule Zmobies.StatsManager do
 
   def start, do: send(:stats_manager, :check_status)
 
-  def stop do
-    GenServer.stop(:stats_manager)
-  end
-
   def async_read(requester, message) do
     GenServer.cast(:stats_manager, {:async_read, requester, message})
   end

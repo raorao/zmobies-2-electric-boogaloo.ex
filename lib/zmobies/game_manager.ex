@@ -7,15 +7,15 @@ defmodule Zmobies.GameManager do
   end
 
   def finish do
-    Supervisor.terminate_child(:world_supervisor, :character_supervisor)
+    Zmobies.CharacterSupervisor.stop_children
   end
 
   def init({x, y, humans, zombies}) do
     children = [
       supervisor(CharacterSupervisor, []),
-      worker(WorldManager, [{x, y}, {humans, zombies}], restart: :transient),
-      worker(StatsManager, [], restart: :transient),
-      worker(Interface, [], restart: :transient)
+      worker(WorldManager, [{x, y}, {humans, zombies}]),
+      worker(StatsManager, []),
+      worker(Interface, [])
     ]
 
     supervise(children, strategy: :one_for_one)

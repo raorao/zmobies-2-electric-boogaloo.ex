@@ -40,10 +40,6 @@ defmodule Zmobies.WorldManager do
     {:ok, limits}
   end
 
-  def stop do
-    GenServer.stop(:world)
-  end
-
   # to avoid read contention, we skip GenServer and delegate directly to ETS table.
   @spec at(%Location{}) :: World.unbounded_lookup
   def at(%Location{} = location) do

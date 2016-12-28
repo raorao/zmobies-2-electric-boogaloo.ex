@@ -74,14 +74,16 @@ defmodule Zmobies.World do
     do: :out_of_bounds
 
   def move(from, to, state) do
-    {:occupied, being} = at(from, state)
-
-    case insert(to, (%{being | :location => to}), state) do
-      {:ok, being} ->
-        remove(from, state)
-        {:ok, being}
+    case at(from, state) do
       {:occupied, being} ->
-        {:occupied, being}
+        case insert(to, (%{being | :location => to}), state) do
+          {:ok, being} ->
+            remove(from, state)
+            {:ok, being}
+          {:occupied, being} ->
+            {:occupied, being}
+        end
+      error -> error
     end
   end
 
