@@ -21,42 +21,6 @@ import socket from "./socket"
 
 let channel = socket.channel("game:lobby", {})
 
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
-
-function randomInt() {
-  return Math.ceil(Math.random() * 100)
-}
-
-
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
-
-function getRandomType() {
-  return Math.random() > 0.5 ? "zombie" : "human"
-}
 
 class Container extends React.Component {
 
@@ -91,9 +55,7 @@ class Container extends React.Component {
   render() {
     return (
       React.createElement('div', {className: "container"},
-        // React.createElement(FlipMove, {duration: 100, leaveAnimation: "none"},
-          this.renderChildren()
-        // )
+        this.renderChildren()
       )
     );
   }
