@@ -17,7 +17,9 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-// import socket from "./socket"
+import socket from "./socket"
+
+let channel = socket.channel("game:lobby", {})
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -60,22 +62,13 @@ class Container extends React.Component {
 
   constructor() {
     super();
-    const beings = Array.apply(null, Array(600)).map(function(_, index) {
-      return {x: randomInt(), y: randomInt(), uuid: index, type: getRandomType()}
-    })
-    this.state = {beings: beings};
+    this.state = {beings: []};
   }
 
   componentDidMount() {
-    setInterval(function() {
-      this.setState(
-        {
-          beings: this.state.beings.map(function(being) {
-            return Object.assign(being, {x: randomInt(), y: randomInt()})
-          })
-        }
-      )
-    }.bind(this), 3000)
+    channel.on("update", function(payload) {
+      this.setState({beings: payload.snapshot})
+    }.bind(this))
   }
 
   renderChildren() {
@@ -110,3 +103,6 @@ ReactDOM.render(
   React.createElement(Container, {}, []),
   document.querySelector('anchor')
 );
+
+channel.join()
+  .receive("error", resp => { console.log("Unable to join", resp) })

@@ -2,7 +2,7 @@ defmodule WebClient.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", WebClient.RoomChannel
+  channel "game:*", WebClient.GameChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
