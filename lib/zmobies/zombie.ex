@@ -8,8 +8,7 @@ defmodule Zmobies.Zombie do
     |> Movement.nearest_enemy(being)
 
     case adjacent_enemy do
-      {enemy_location, _enemy} ->
-        {:attack, enemy_location}
+      {enemy_location, _enemy} -> {:attack, enemy_location}
       nil -> {:move, chase(proximity_stream, being)}
     end
   end
