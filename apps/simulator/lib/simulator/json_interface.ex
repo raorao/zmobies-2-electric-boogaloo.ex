@@ -33,7 +33,7 @@ defmodule Simulator.JsonInterface do
   end
 
   defp schedule_next_broadcast do
-    Process.send_after(self, :broadcast, 1000)
+    Process.send_after(self, :broadcast, 60)
   end
 
   def snapshot do

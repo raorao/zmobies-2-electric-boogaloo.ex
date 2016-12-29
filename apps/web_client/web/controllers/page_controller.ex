@@ -4,20 +4,26 @@ defmodule WebClient.PageController do
 
   def index(conn, _params) do
     case start do
+      {:ok, _} -> nil
       {:error, {:already_started, _}} ->
         GameManager.stop
         start
-      {:ok, _} -> nil
     end
 
     render conn, "index.html"
   end
 
-  defp broadcast({snapshot, _status}) do
-    WebClient.Endpoint.broadcast("game:lobby", "update", %{snapshot: snapshot})
+  defp start do
+    GameSupervisor.for_json(
+      x: 35,
+      y: 35,
+      humans: 300,
+      zombies: 10,
+      broadcast_fn: &broadcast/1
+    )
   end
 
-  defp start do
-    GameSupervisor.for_json(x: 20, y: 20, humans: 3, zombies: 1, broadcast_fn: &broadcast/1)
+  defp broadcast({snapshot, _status}) do
+    WebClient.Endpoint.broadcast("game:lobby", "update", %{snapshot: snapshot})
   end
 end

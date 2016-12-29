@@ -1,8 +1,8 @@
 /* This file is for your main application css. */
 
 .being {
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   border-radius: 50%;
   position: absolute;
 }
