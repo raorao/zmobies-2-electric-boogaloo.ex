@@ -80,13 +80,13 @@ defmodule Simulator.Being do
     {:attacked, Being.hurt(attacker, victim)}
   end
 
-  def as_json(%Being{location: %Location{x: x, y: y}, type: type}) do
+  def as_json(%Being{location: %Location{x: x, y: y}, uuid: uuid, type: type}) do
     type_string = case type do
       :zombie -> "zombie"
       :human  -> "human"
     end
 
-    %{x: x, y: y, type: type_string}
+    %{x: x, y: y, type: type_string, uuid: uuid}
   end
 
   def to_s(%Being{type: type}, colors: colors) do
