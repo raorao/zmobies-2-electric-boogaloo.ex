@@ -79,8 +79,8 @@ class Container extends React.Component {
           className: "being " + being.type,
           style:
             {
-              top: (being.y * 8) + "px",
-              left: (being.x * 8) + "px",
+              top: (being.y * 20) + "px",
+              left: (being.x * 20) + "px",
               backgroundColor: being.color,
             }
         }
@@ -91,7 +91,7 @@ class Container extends React.Component {
   render() {
     return (
       React.createElement('div', {className: "container"},
-        React.createElement(FlipMove, {duration: 500},
+        React.createElement(FlipMove, {duration: 200},
           this.renderChildren()
         )
       )
