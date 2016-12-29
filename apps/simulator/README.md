@@ -1,6 +1,6 @@
 # Simulator
 
-**TODO: Add description**
+UI-agnostic zombie simulator.
 
 ## Installation
 
