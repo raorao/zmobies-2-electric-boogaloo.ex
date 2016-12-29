@@ -53,9 +53,16 @@ defmodule Zmobies.Character do
     new_being = case action do
       {:move, moves} -> Action.move(moves, being)
       {:attack, enemy_location} -> Action.attack(being, enemy_location)
-    end
+    end |> Being.age
 
-    schedule_next_move(being)
+    if Being.dead?(new_being) do
+      WorldManager.remove(new_being.location)
+      stop(being)
+    else
+      WorldManager.update new_being
+
+      schedule_next_move(being)
+    end
 
     {:noreply, new_being}
   end

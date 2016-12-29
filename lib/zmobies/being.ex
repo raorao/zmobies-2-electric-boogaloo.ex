@@ -1,6 +1,6 @@
 defmodule Zmobies.Being do
   @enforce_keys [:location, :type]
-  defstruct [:location, :type, :uuid, :speed]
+  defstruct [:location, :type, :uuid, :speed, :health]
   alias Zmobies.{Location, Being}
 
   @type character_type :: :human | :zombie
@@ -17,7 +17,7 @@ defmodule Zmobies.Being do
 
   @spec set_traits(%Being{}) :: %Being{uuid: String.t, speed: number}
   def set_traits(being = %Being{}) do
-    %{ being | :uuid => UUID.uuid1(), :speed => generate_speed(type(being)) }
+    %{ being | :uuid => UUID.uuid1(), :speed => generate_speed(type(being)), :health => generate_health }
   end
 
   @spec x(%Being{}) :: number
@@ -35,6 +35,14 @@ defmodule Zmobies.Being do
   def turn(being = %Being{type: :human}) do
     {:ok, %{being | type: :zombie, speed: generate_speed(:zombie) } }
   end
+
+  @spec age(%Being{}) :: %Being{}
+  def age(being = %Being{type: :zombie, health: health}), do: %{ being | health: health - 1 }
+  def age(being = %Being{type: :human}), do: being
+
+  @spec dead?(%Being{}) :: boolean
+  def dead?(%Being{health: 0}), do: true
+  def dead?(%Being{health: _}), do: false
 
   @spec generate_health() :: number
   defp generate_health do
