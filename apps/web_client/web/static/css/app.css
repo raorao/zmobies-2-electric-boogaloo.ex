@@ -1,1 +1,16 @@
 /* This file is for your main application css. */
+
+.being {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.zombie {
+  background-color: red;
+}
+
+.human {
+  background-color: cyan;
+}
