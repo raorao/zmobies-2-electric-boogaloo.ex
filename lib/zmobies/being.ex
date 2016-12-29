@@ -29,20 +29,26 @@ defmodule Zmobies.Being do
   @spec type(%Being{}) :: character_type
   def type(%Being{type: type}), do: type
 
-  @spec turn(%Being{}) :: {:error, :already_turned} | {:ok, %Being{}}
+  @spec turn(%Being{}) :: {:error, :already_turned} | %Being{}
   def turn(%Being{type: :zombie}), do: {:error, :already_turned}
 
   def turn(being = %Being{type: :human}) do
-    {:ok, %{being | type: :zombie, speed: generate_speed(:zombie) } }
+    %{being | type: :zombie, speed: generate_speed(:zombie) }
   end
+
+  @spec hurt(%Being{}, %Being{}) :: %Being{}
+  def hurt(attacker, victim), do: %{ victim | health: victim.health - attacker.health }
+
+  @spec feed(%Being{}) :: %Being{}
+  def feed(being = %Being{health: health}), do: %{ being | health: health + 10 }
 
   @spec age(%Being{}) :: %Being{}
   def age(being = %Being{type: :zombie, health: health}), do: %{ being | health: health - 1 }
   def age(being = %Being{type: :human}), do: being
 
   @spec dead?(%Being{}) :: boolean
-  def dead?(%Being{health: 0}), do: true
-  def dead?(%Being{health: _}), do: false
+  def dead?(%Being{health: health}) when health <= 0, do: true
+  def dead?(%Being{health: health}) when health > 0, do: false
 
   @spec generate_health() :: number
   defp generate_health do
@@ -61,6 +67,21 @@ defmodule Zmobies.Being do
   @spec generate_stat(number) :: number
   defp generate_stat(average) do
     average + (:rand.uniform(50) - 25)
+  end
+
+  @spec attack(%Being{}, %Being{}) :: {:error, :allies} | {:attacked, %Being{}} | {:attacked, %Being{}, :feed}
+  def attack(%Being{type: :human}, %Being{type: :human}), do: {:error, :allies}
+
+  def attack(%Being{type: :zombie}, victim = %Being{type: :human}) do
+    {:attacked, Being.turn(victim), :feed}
+  end
+
+  def attack(attacker = %Being{type: :zombie}, victim = %Being{type: :zombie}) do
+    {:attacked, Being.hurt(attacker, victim), :feed}
+  end
+
+  def attack(attacker = %Being{type: :human}, victim = %Being{type: :zombie}) do
+    {:attacked, Being.hurt(attacker, victim)}
   end
 
   def to_s(%Being{type: type}, colors: colors) do

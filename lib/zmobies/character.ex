@@ -31,14 +31,19 @@ defmodule Zmobies.Character do
     {:via, :gproc, {:n, :l, being.uuid}}
   end
 
-  def handle_cast({:attack, _attacker}, being) do
-    case Being.turn(being) do
-      {:ok, new_being} ->
+  def handle_cast({:attack, attacker}, victim) do
+    new_being = case Being.attack(attacker, victim) do
+      {:attacked, new_being, response} ->
         WorldManager.update(new_being)
-        {:noreply, new_being}
-      {:error, _} ->
-        {:noreply, being}
+        GenServer.cast(via_tuple(attacker), response)
+        new_being
+      {:attacked, new_being} ->
+        WorldManager.update(new_being)
+        new_being
+      {:error, _} -> victim
     end
+
+    {:noreply, new_being}
   end
 
   def handle_call(:read, _, state) do
@@ -64,6 +69,12 @@ defmodule Zmobies.Character do
       schedule_next_move(being)
     end
 
+    {:noreply, new_being}
+  end
+
+  def handle_cast(:feed, being) do
+    new_being = Being.feed(being)
+    WorldManager.update new_being
     {:noreply, new_being}
   end
 

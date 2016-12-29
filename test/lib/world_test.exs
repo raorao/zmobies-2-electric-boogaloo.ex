@@ -105,7 +105,7 @@ defmodule ZmobiesWorldTest do
     test "updates the being at its location" do
       {:ok, being} = World.insert Location.at(x: 1, y: 1), :human, {10, 10}
 
-      {:ok, new_being} = Being.turn(being)
+      new_being = Being.turn(being)
       assert World.update(new_being) == {:ok, new_being}
       assert World.at(Location.at(x: 1, y: 1), {10, 10}) == {:occupied, new_being}
     end
