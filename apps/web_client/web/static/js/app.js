@@ -54,8 +54,13 @@ class Container extends React.Component {
 
   maybeRenderStatus() {
     let status = this.state.status
+    let beings = this.state.beings
 
-    if (status == "ongoing" || status == "empty") {
+    if (beings.length == 0) {
+      return React.createElement('h2', {key: "status", className: status},
+        React.createElement('a', {href: "/restart"}, "Restart.")
+      )
+    } else if (status == "ongoing" || status == "empty") {
       return null
     } else {
       return React.createElement('h2', {key: "status", className: status},
