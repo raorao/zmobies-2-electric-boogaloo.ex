@@ -1,6 +1,6 @@
 defmodule WebClient.PageController do
   use WebClient.Web, :controller
-  alias Simulator.GameManager
+  alias Simulator.{GameSupervisor, GameManager}
 
   def index(conn, _params) do
     case start do
@@ -18,6 +18,6 @@ defmodule WebClient.PageController do
   end
 
   defp start do
-    GameManager.for_json(x: 20, y: 20, humans: 3, zombies: 1, broadcast_fn: &broadcast/1)
+    GameSupervisor.for_json(x: 20, y: 20, humans: 3, zombies: 1, broadcast_fn: &broadcast/1)
   end
 end

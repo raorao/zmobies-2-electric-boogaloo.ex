@@ -1,5 +1,6 @@
 defmodule Simulator do
   use Application
+  alias Simulator.GameSupervisor
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
@@ -7,7 +8,9 @@ defmodule Simulator do
     import Supervisor.Spec, warn: false
 
     # Define workers and child supervisors to be supervised
-    children = []
+    children = [
+      supervisor(GameSupervisor, []),
+    ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options

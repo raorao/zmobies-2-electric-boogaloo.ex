@@ -1,21 +1,9 @@
 defmodule Simulator.GameManager do
   use Supervisor
-  alias Simulator.{WorldManager, CharacterSupervisor, StatsManager, ConsoleInterface, JsonInterface}
+  alias Simulator.{WorldManager, CharacterSupervisor, StatsManager}
 
-  def for_json(x: x, y: y, humans: humans, zombies: zombies, broadcast_fn: broadcast_fn) do
-    Supervisor.start_link(
-      __MODULE__,
-      {x, y, humans, zombies, JsonInterface, [broadcast_fn]},
-      name: :game_manager
-    )
-  end
-
-  def for_console(x: x, y: y, humans: humans, zombies: zombies) do
-    Supervisor.start_link(
-      __MODULE__,
-      {x, y, humans, zombies, ConsoleInterface, []},
-      name: :game_manager
-    )
+  def start_link(opts) do
+    Supervisor.start_link(__MODULE__, opts, name: :game_manager)
   end
 
   def stop do
@@ -31,7 +19,7 @@ defmodule Simulator.GameManager do
       supervisor(CharacterSupervisor, []),
       worker(WorldManager, [{x, y}, {humans, zombies}]),
       worker(StatsManager, []),
-      worker(interface_module, interface_args)
+      worker(interface_module, interface_args),
     ]
 
     supervise(children, strategy: :one_for_one)
