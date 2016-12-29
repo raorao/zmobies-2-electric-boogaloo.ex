@@ -1,22 +1,11 @@
-defmodule Simulator.Mixfile do
+defmodule Zmobies.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :simulator,
-     version: "0.1.0",
-     elixir: "~> 1.3",
+    [apps_path: "apps",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     aliases: aliases(),
-     deps: deps()]
-  end
-
-  # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
-  def application do
-    [applications: [:logger, :gproc],
-     mod: {Simulator, []}]
+     deps: deps]
   end
 
   # Dependencies can be Hex packages:
@@ -27,18 +16,11 @@ defmodule Simulator.Mixfile do
   #
   #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
   #
-  # Type "mix help deps" for more examples and options
+  # Type "mix help deps" for more examples and options.
+  #
+  # Dependencies listed here are available only for this project
+  # and cannot be accessed from applications inside the apps folder
   defp deps do
-    [
-      { :uuid, "~> 1.1" },
-      { :gproc, "~> 0.6.1" },
-      {:dialyxir, "~> 0.4", only: [:dev], runtime: false}
-    ]
-  end
-
-  defp aliases do
-    [
-      test: "test --no-start"
-    ]
+    []
   end
 end
