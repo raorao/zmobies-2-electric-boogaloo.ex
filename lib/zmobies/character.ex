@@ -76,8 +76,8 @@ defmodule Zmobies.Character do
 
   defp character_module(being) do
     case Being.type(being) do
-      :human -> Zmobies.Human
-      :zombie -> Zmobies.Zombie
+      :human -> Zombies.Character.Human
+      :zombie -> Zombies.Character.Zombie
     end
   end
 

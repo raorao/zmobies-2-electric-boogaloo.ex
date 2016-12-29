@@ -1,4 +1,4 @@
-defmodule Zmobies.Human do
+defmodule Zombies.Character.Human do
   alias Zmobies.{Being, Movement, Location}
 
   @spec act(Enumerable.t, %Being{}) :: {:attack, %Location{}} | {:move, [%Location{}]}
