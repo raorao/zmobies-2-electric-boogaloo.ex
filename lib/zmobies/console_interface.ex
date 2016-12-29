@@ -1,4 +1,4 @@
-defmodule Zmobies.Interface do
+defmodule Zmobies.ConsoleInterface do
   alias Zmobies.StatsManager
   use GenServer
 
