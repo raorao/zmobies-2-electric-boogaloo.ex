@@ -46,36 +46,36 @@ defmodule Zmobies.Character do
     {:noreply, new_being}
   end
 
+  def handle_cast(:feed, being) do
+    new_being = Being.feed(being)
+    WorldManager.update new_being
+    {:noreply, new_being}
+  end
+
   def handle_call(:read, _, state) do
     {:reply, state, state}
   end
 
   def handle_info(:move, being) do
-    action = being
-    |> Movement.proximity_stream
-    |> character_module(being).act(being)
-
-    new_being = case action do
-      {:move, moves} -> Action.move(moves, being)
-      {:attack, enemy_location} -> Action.attack(being, enemy_location)
-    end |> Being.age
-
-    if Being.dead?(new_being) do
-      WorldManager.remove(new_being.location)
+    if Being.dead?(being) do
+      WorldManager.remove(being.location)
       stop(being)
+      {:noreply, being}
     else
+      action = being
+      |> Movement.proximity_stream
+      |> character_module(being).act(being)
+
+      new_being = case action do
+        {:move, moves} -> Action.move(moves, being)
+        {:attack, enemy_location} -> Action.attack(being, enemy_location)
+      end |> Being.age
+
       WorldManager.update new_being
 
-      schedule_next_move(being)
+      schedule_next_move(new_being)
+      {:noreply, new_being}
     end
-
-    {:noreply, new_being}
-  end
-
-  def handle_cast(:feed, being) do
-    new_being = Being.feed(being)
-    WorldManager.update new_being
-    {:noreply, new_being}
   end
 
   defp character_module(being) do
