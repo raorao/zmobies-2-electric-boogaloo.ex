@@ -3,17 +3,6 @@ defmodule WebClient.PageController do
   alias Simulator.{GameSupervisor, GameManager}
 
   def index(conn, _params) do
-    case start do
-      {:ok, _} -> nil
-      {:error, {:already_started, _}} ->
-        GameManager.stop
-        start
-    end
-
-    render conn, "index.html"
-  end
-
-  defp start do
     GameSupervisor.for_json(
       x: 35,
       y: 35,
@@ -21,6 +10,13 @@ defmodule WebClient.PageController do
       zombies: 10,
       broadcast_fn: &broadcast/1
     )
+
+    render conn, "index.html"
+  end
+
+  def restart(conn, _params) do
+    GameManager.stop
+    redirect conn, to: "/"
   end
 
   defp broadcast({snapshot, status}) do
