@@ -46,6 +46,10 @@ defmodule Zmobies.WorldManager do
     World.at(location)
   end
 
+  # to avoid read contention, we skip GenServer and delegate directly to ETS table.
+  @spec all() :: [%Being{}]
+  def all, do: World.all
+
   @spec insert(%Location{}, Being.character_type) :: {:ok, %Being{}} | World.bounded_lookup
   def insert(%Location{} = location, type) do
     GenServer.call(:world, {:insert, location, type})

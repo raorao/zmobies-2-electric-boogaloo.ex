@@ -80,6 +80,15 @@ defmodule Zmobies.Being do
     {:attacked, Being.hurt(attacker, victim)}
   end
 
+  def as_json(%Being{location: %Location{x: x, y: y}, type: type}) do
+    type_string = case type do
+      :zombie -> "zombie"
+      :human  -> "human"
+    end
+
+    %{x: x, y: y, type: type_string}
+  end
+
   def to_s(%Being{type: type}, colors: colors) do
     if colors do
       case type do

@@ -6,7 +6,7 @@ defmodule Zmobies.ConsoleInterface do
     GenServer.start_link(
       __MODULE__,
       %{printing: true},
-      name: :interface
+      name: :console_interface
     )
   end
 
@@ -16,7 +16,7 @@ defmodule Zmobies.ConsoleInterface do
   end
 
   def toggle_print do
-    GenServer.cast(:interface, :toggle_print)
+    GenServer.cast(:console_interface, :toggle_print)
   end
 
   def handle_info(:print, state = %{printing: false}), do: {:noreply, state}
