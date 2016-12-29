@@ -1,4 +1,4 @@
-# Zmobies
+# Simulator
 
 **TODO: Add description**
 
@@ -6,19 +6,19 @@
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
-  1. Add `zmobies` to your list of dependencies in `mix.exs`:
+  1. Add `simulator` to your list of dependencies in `mix.exs`:
 
     ```elixir
     def deps do
-      [{:zmobies, "~> 0.1.0"}]
+      [{:simulator, "~> 0.1.0"}]
     end
     ```
 
-  2. Ensure `zmobies` is started before your application:
+  2. Ensure `simulator` is started before your application:
 
     ```elixir
     def application do
-      [applications: [:zmobies]]
+      [applications: [:simulator]]
     end
     ```
 

@@ -1,6 +1,6 @@
-defmodule Zmobies.GameManager do
+defmodule Simulator.GameManager do
   use Supervisor
-  alias Zmobies.{WorldManager, CharacterSupervisor, StatsManager, ConsoleInterface, JsonInterface}
+  alias Simulator.{WorldManager, CharacterSupervisor, StatsManager, ConsoleInterface, JsonInterface}
 
   def for_json(x: x, y: y, humans: humans, zombies: zombies, broadcast_fn: broadcast_fn) do
     Supervisor.start_link(
@@ -23,7 +23,7 @@ defmodule Zmobies.GameManager do
   end
 
   def finish do
-    Zmobies.CharacterSupervisor.stop_children
+    Simulator.CharacterSupervisor.stop_children
   end
 
   def init({x, y, humans, zombies, interface_module, interface_args}) do

@@ -1,6 +1,6 @@
-defmodule ZmobiesPresenterTest do
+defmodule SimulatorPresenterTest do
   use ExUnit.Case
-  alias Zmobies.{Being, Presenter, World}
+  alias Simulator.{Being, Presenter, World}
   doctest Presenter
 
   describe "to_s" do

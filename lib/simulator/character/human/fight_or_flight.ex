@@ -1,5 +1,5 @@
 defmodule Zombies.Character.Human.FightOrFlight do
-  alias Zmobies.{Being, Movement, Character.Helpers}
+  alias Simulator.{Being, Movement, Character.Helpers}
 
   @spec act([Movement.ring], %Being{}) :: Movement.t
   def act(proximity_stream, being) do

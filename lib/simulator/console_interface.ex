@@ -1,5 +1,5 @@
-defmodule Zmobies.ConsoleInterface do
-  alias Zmobies.StatsManager
+defmodule Simulator.ConsoleInterface do
+  alias Simulator.StatsManager
   use GenServer
 
   def start_link do
@@ -50,7 +50,7 @@ defmodule Zmobies.ConsoleInterface do
   end
 
   defp print do
-    new_board =  Zmobies.Presenter.to_s(colors: true)
+    new_board =  Simulator.Presenter.to_s(colors: true)
     IEx.Helpers.clear
     IO.puts new_board
   end

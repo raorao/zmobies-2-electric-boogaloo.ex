@@ -1,5 +1,5 @@
-defmodule Zmobies.JsonInterface do
-  alias Zmobies.{Being, WorldManager, StatsManager}
+defmodule Simulator.JsonInterface do
+  alias Simulator.{Being, WorldManager, StatsManager}
   use GenServer
 
   def start_link(broadcast_fn) do

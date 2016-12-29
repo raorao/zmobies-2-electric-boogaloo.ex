@@ -1,6 +1,6 @@
 defmodule MovementTest do
   use ExUnit.Case
-  alias Zmobies.{Movement, World, Being}
+  alias Simulator.{Movement, World, Being}
   doctest Movement
 
   describe "proximity_stream" do

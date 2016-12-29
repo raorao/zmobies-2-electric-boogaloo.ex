@@ -1,30 +1,30 @@
-defmodule Zmobies.WorldManager do
+defmodule Simulator.WorldManager do
   use GenServer
-  alias Zmobies.{World, Being, CharacterSupervisor, StatsManager}
+  alias Simulator.{World, Being, CharacterSupervisor, StatsManager}
 
   @doc ~S"""
     Module for managing global locations of beings.
 
     ## Examples
 
-        iex> Zmobies.WorldManager.start_link({10,10},{0,0})
-        iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 1))
+        iex> Simulator.WorldManager.start_link({10,10},{0,0})
+        iex> Simulator.WorldManager.at(Simulator.Location.at(x: 1, y: 1))
         :vacant
-        iex> Zmobies.WorldManager.insert(Zmobies.Location.at(x: 1, y: 1), :human)
-        {:ok, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}}
-        iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 1))
-        {:occupied, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}}
-        iex> Zmobies.WorldManager.insert(Zmobies.Location.at(x: 1, y: 1), :zombie)
-        {:occupied, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 1}, type: :human}}
-        iex> Zmobies.WorldManager.move(Zmobies.Location.at(x: 1, y: 1), Zmobies.Location.at(x: 1, y: 2))
-        iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 2))
-        {:occupied, %Zmobies.Being{location: %Zmobies.Location{x: 1, y: 2}, type: :human}}
-        iex> Zmobies.WorldManager.remove(Zmobies.Location.at(x: 1, y: 1))
-        iex> Zmobies.WorldManager.at(Zmobies.Location.at(x: 1, y: 1))
+        iex> Simulator.WorldManager.insert(Simulator.Location.at(x: 1, y: 1), :human)
+        {:ok, %Simulator.Being{location: %Simulator.Location{x: 1, y: 1}, type: :human}}
+        iex> Simulator.WorldManager.at(Simulator.Location.at(x: 1, y: 1))
+        {:occupied, %Simulator.Being{location: %Simulator.Location{x: 1, y: 1}, type: :human}}
+        iex> Simulator.WorldManager.insert(Simulator.Location.at(x: 1, y: 1), :zombie)
+        {:occupied, %Simulator.Being{location: %Simulator.Location{x: 1, y: 1}, type: :human}}
+        iex> Simulator.WorldManager.move(Simulator.Location.at(x: 1, y: 1), Simulator.Location.at(x: 1, y: 2))
+        iex> Simulator.WorldManager.at(Simulator.Location.at(x: 1, y: 2))
+        {:occupied, %Simulator.Being{location: %Simulator.Location{x: 1, y: 2}, type: :human}}
+        iex> Simulator.WorldManager.remove(Simulator.Location.at(x: 1, y: 1))
+        iex> Simulator.WorldManager.at(Simulator.Location.at(x: 1, y: 1))
         :vacant
     """
 
-  alias Zmobies.Location
+  alias Simulator.Location
 
   def start_link(limits, beings) do
     GenServer.start_link(

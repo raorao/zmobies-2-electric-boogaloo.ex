@@ -1,5 +1,5 @@
-defmodule Zmobies.Action do
-  alias Zmobies.{WorldManager, Location, Being, Character}
+defmodule Simulator.Action do
+  alias Simulator.{WorldManager, Location, Being, Character}
 
   def move([], being), do: being
 

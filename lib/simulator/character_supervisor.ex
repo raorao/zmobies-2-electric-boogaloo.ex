@@ -1,6 +1,6 @@
-defmodule Zmobies.CharacterSupervisor do
+defmodule Simulator.CharacterSupervisor do
   use Supervisor
-  alias Zmobies.Character
+  alias Simulator.Character
 
   def start_link do
     Supervisor.start_link(__MODULE__, [], name: :character_supervisor)

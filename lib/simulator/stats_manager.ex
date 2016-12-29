@@ -1,6 +1,6 @@
-defmodule Zmobies.StatsManager do
+defmodule Simulator.StatsManager do
   use GenServer
-  alias Zmobies.{World, GameManager}
+  alias Simulator.{World, GameManager}
 
   def start_link do
     GenServer.start_link(

@@ -1,4 +1,4 @@
-defmodule Zmobies.Location do
+defmodule Simulator.Location do
   @enforce_keys [:x, :y]
   defstruct [:x, :y]
 

@@ -1,6 +1,6 @@
-defmodule ZmobiesWorldTest do
+defmodule SimulatorWorldTest do
   use ExUnit.Case
-  alias Zmobies.{World, Location, Being}
+  alias Simulator.{World, Location, Being}
   doctest World
 
   setup do

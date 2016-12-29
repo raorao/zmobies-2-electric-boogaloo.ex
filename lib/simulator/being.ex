@@ -1,7 +1,7 @@
-defmodule Zmobies.Being do
+defmodule Simulator.Being do
   @enforce_keys [:location, :type]
   defstruct [:location, :type, :uuid, :speed, :health]
-  alias Zmobies.{Location, Being}
+  alias Simulator.{Location, Being}
 
   @type character_type :: :human | :zombie
 

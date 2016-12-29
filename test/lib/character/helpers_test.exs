@@ -1,6 +1,6 @@
 defmodule CharacterHelpersTest do
   use ExUnit.Case
-  alias Zmobies.{Movement, WorldManager, Location, Character.Helpers}
+  alias Simulator.{Movement, WorldManager, Location, Character.Helpers}
   doctest Helpers
 
   describe "nearest_enemy" do

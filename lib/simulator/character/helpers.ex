@@ -1,5 +1,5 @@
-defmodule Zmobies.Character.Helpers do
-  alias Zmobies.{Being, Location}
+defmodule Simulator.Character.Helpers do
+  alias Simulator.{Being, Location}
 
   def run(proximity_stream, being = %Being{location: current_location}) do
     nearest_enemy = proximity_stream

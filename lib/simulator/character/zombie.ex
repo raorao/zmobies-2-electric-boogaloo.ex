@@ -1,6 +1,5 @@
-defmodule Zombies.Character.Human.ThisIsSparta do
-  alias Zmobies.{Being, Movement, Character.Helpers}
-
+defmodule Zombies.Character.Zombie do
+  alias Simulator.{Being, Movement, Character.Helpers}
 
   @spec act([Movement.ring], %Being{}) :: Movement.t
   def act(proximity_stream, being) do
@@ -13,7 +12,7 @@ defmodule Zombies.Character.Human.ThisIsSparta do
       nil ->
         proximity_stream
         |> Stream.drop(1)
-        |> Stream.take(5)
+        |> Stream.take(2)
         |> Helpers.chase(being)
     end
   end

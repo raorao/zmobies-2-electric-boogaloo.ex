@@ -1,6 +1,6 @@
 defmodule ActionTest do
   use ExUnit.Case
-  alias Zmobies.{Action, WorldManager, Location}
+  alias Simulator.{Action, WorldManager, Location}
   doctest Action
 
   describe "move" do

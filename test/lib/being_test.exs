@@ -1,6 +1,6 @@
 defmodule BeingTest do
   use ExUnit.Case
-  alias Zmobies.Being
+  alias Simulator.Being
   doctest Being
 
   describe "attack" do

@@ -1,6 +1,6 @@
-defmodule Zmobies.Character do
+defmodule Simulator.Character do
   use GenServer
-  alias Zmobies.{Movement, Being, Movement, Action, WorldManager}
+  alias Simulator.{Movement, Being, Movement, Action, WorldManager}
 
   def start_link(being) do
     GenServer.start_link(

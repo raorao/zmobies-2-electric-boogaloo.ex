@@ -1,5 +1,5 @@
-defmodule Zmobies.World do
-  alias Zmobies.{Location, Being}
+defmodule Simulator.World do
+  alias Simulator.{Location, Being}
 
   @type bounded_lookup :: {:occupied, %Being{}} | :vacant | :out_of_bounds
   @type unbounded_lookup :: {:occupied, %Being{}} | :vacant

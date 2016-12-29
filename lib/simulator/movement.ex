@@ -1,5 +1,5 @@
-defmodule Zmobies.Movement do
-  alias Zmobies.{Location, WorldManager, World, Being}
+defmodule Simulator.Movement do
+  alias Simulator.{Location, WorldManager, World, Being}
 
   @type t :: {:attack, %Location{}} | {:move, [%Location{}]}
 

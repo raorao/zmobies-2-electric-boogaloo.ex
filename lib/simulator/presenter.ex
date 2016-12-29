@@ -1,5 +1,5 @@
-defmodule Zmobies.Presenter do
-  alias Zmobies.{Being, World}
+defmodule Simulator.Presenter do
+  alias Simulator.{Being, World}
 
   def to_s(colors: colors) do
     sorted = :world

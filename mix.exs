@@ -1,8 +1,8 @@
-defmodule Zmobies.Mixfile do
+defmodule Simulator.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :zmobies,
+    [app: :simulator,
      version: "0.1.0",
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
@@ -16,7 +16,7 @@ defmodule Zmobies.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [applications: [:logger, :gproc],
-     mod: {Zmobies, []}]
+     mod: {Simulator, []}]
   end
 
   # Dependencies can be Hex packages:

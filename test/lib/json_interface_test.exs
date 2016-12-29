@@ -1,6 +1,6 @@
 defmodule JsonInterfaceTest do
   use ExUnit.Case
-  alias Zmobies.{WorldManager, Location, JsonInterface}
+  alias Simulator.{WorldManager, Location, JsonInterface}
   doctest JsonInterface
 
   describe "snapshot" do

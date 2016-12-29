@@ -1,5 +1,5 @@
-defmodule ZmobiesWorldManagerTest do
+defmodule SimulatorWorldManagerTest do
   use ExUnit.Case
-  alias Zmobies.{WorldManager}
+  alias Simulator.{WorldManager}
   doctest WorldManager
 end
