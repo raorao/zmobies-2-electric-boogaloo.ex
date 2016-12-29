@@ -3,7 +3,11 @@ defmodule Zmobies.GameManager do
   alias Zmobies.{WorldManager, CharacterSupervisor, StatsManager, Interface}
 
   def start_link(x: x, y: y, humans: humans, zombies: zombies) do
-    Supervisor.start_link(__MODULE__, {x, y, humans, zombies}, name: :world_supervisor)
+    Supervisor.start_link(__MODULE__, {x, y, humans, zombies}, name: :game_manager)
+  end
+
+  def stop do
+    GenServer.stop(:game_manager)
   end
 
   def finish do
