@@ -56,26 +56,22 @@ defmodule Zmobies.Character do
     {:reply, state, state}
   end
 
+  def handle_info(:move, being = %Being{health: health}) when health <= 0 do
+    WorldManager.remove(being.location)
+    stop(being)
+    {:noreply, being}
+  end
+
   def handle_info(:move, being) do
-    if Being.dead?(being) do
-      WorldManager.remove(being.location)
-      stop(being)
-      {:noreply, being}
-    else
-      action = being
-      |> Movement.proximity_stream
-      |> character_module(being).act(being)
+    new_being = being
+    |> Movement.proximity_stream
+    |> character_module(being).act(being)
+    |> execute_action(being)
+    |> Being.age
 
-      new_being = case action do
-        {:move, moves} -> Action.move(moves, being)
-        {:attack, enemy_location} -> Action.attack(being, enemy_location)
-      end |> Being.age
-
-      WorldManager.update new_being
-
-      schedule_next_move(new_being)
-      {:noreply, new_being}
-    end
+    WorldManager.update new_being
+    schedule_next_move new_being
+    {:noreply, new_being}
   end
 
   defp character_module(being) do
@@ -88,5 +84,12 @@ defmodule Zmobies.Character do
   defp schedule_next_move(%Being{speed: speed}) do
     interval = 400 - (3 * speed)
     Process.send_after(self, :move, interval)
+  end
+
+  defp execute_action(action, being) do
+    case action do
+      {:move, moves} -> Action.move(moves, being)
+      {:attack, enemy_location} -> Action.attack(being, enemy_location)
+    end
   end
 end

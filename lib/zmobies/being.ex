@@ -46,10 +46,6 @@ defmodule Zmobies.Being do
   def age(being = %Being{type: :zombie, health: health}), do: %{ being | health: health - 1 }
   def age(being = %Being{type: :human}), do: being
 
-  @spec dead?(%Being{}) :: boolean
-  def dead?(%Being{health: health}) when health <= 0, do: true
-  def dead?(%Being{health: health}) when health > 0, do: false
-
   @spec generate_health() :: number
   defp generate_health do
     generate_stat(50)
