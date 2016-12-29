@@ -26,12 +26,12 @@ class Container extends React.Component {
 
   constructor() {
     super();
-    this.state = {beings: []};
+    this.state = {beings: [], status: "ongoing"};
   }
 
   componentDidMount() {
     channel.on("update", function(payload) {
-      this.setState({beings: payload.snapshot})
+      this.setState({beings: payload.snapshot, status: payload.status})
     }.bind(this))
   }
 
@@ -52,10 +52,23 @@ class Container extends React.Component {
     })
   }
 
+  maybeRenderStatus() {
+    let status = this.state.status
+
+    if (status == "ongoing" || status == "empty") {
+      return null
+    } else {
+      return React.createElement('h2', {key: "status", className: status}, "The " + status + "s have won.")
+    }
+  }
+
   render() {
     return (
-      React.createElement('div', {className: "container"},
-        this.renderChildren()
+      React.createElement('div', {},
+        React.createElement('div', {className: "container", key: "rao"},
+          this.renderChildren()
+        ),
+        this.maybeRenderStatus()
       )
     );
   }

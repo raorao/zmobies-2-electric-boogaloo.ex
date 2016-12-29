@@ -5,6 +5,18 @@ h1 {
   text-align: center;
 }
 
+h2 {
+  text-align: center;
+}
+
+h2.zombie {
+  color: #FF7D00;
+}
+
+h2.human {
+  color: #41C4FF;
+}
+
 .being {
   height: 25px;
   width: 25px;

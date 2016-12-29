@@ -23,7 +23,7 @@ defmodule WebClient.PageController do
     )
   end
 
-  defp broadcast({snapshot, _status}) do
-    WebClient.Endpoint.broadcast("game:lobby", "update", %{snapshot: snapshot})
+  defp broadcast({snapshot, status}) do
+    WebClient.Endpoint.broadcast("game:lobby", "update", %{snapshot: snapshot, status: status})
   end
 end
