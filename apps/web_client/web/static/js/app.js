@@ -43,8 +43,8 @@ class Container extends React.Component {
           className: "being " + being.type,
           style:
             {
-              top: (being.y * 25) + "px",
-              left: (being.x * 25) + "px",
+              top: (being.y * 20) + "px",
+              left: (being.x * 20) + "px",
               backgroundColor: being.color,
             }
         }

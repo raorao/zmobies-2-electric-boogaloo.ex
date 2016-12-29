@@ -1,16 +1,32 @@
 /* This file is for your main application css. */
 
+h1 {
+  font-size: 80px;
+  text-align: center;
+}
+
 .being {
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   border-radius: 50%;
   position: absolute;
 }
 
-.zombie {
-  background-color: red;
+.being.zombie {
+  background-color: #FF7D00;
 }
 
-.human {
-  background-color: cyan;
+.being.human {
+  background-color:  #41C4FF;
+}
+
+anchor {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  position: relative;
+  width: 800px;
+  height: 750px;
 }
