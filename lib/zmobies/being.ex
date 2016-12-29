@@ -41,7 +41,7 @@ defmodule Zmobies.Being do
     generate_stat(50)
   end
 
-  @spec generate_speed(%Being{}) :: number
+  @spec generate_speed(character_type) :: number
   defp generate_speed(:human) do
     generate_stat(60)
   end
