@@ -53,9 +53,9 @@ anchor {
 
 .custom-container {
   position: relative;
-  width: 45vw;
+  width: 40vw;
   min-width: 500px;
-  height: 45vw;
+  height: 40vw;
   min-height: 500px;
 }
 
