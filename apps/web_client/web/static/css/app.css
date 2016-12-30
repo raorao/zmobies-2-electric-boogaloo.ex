@@ -42,3 +42,7 @@ anchor {
   width: 800px;
   height: 750px;
 }
+
+.container:empty {
+  height: 0px;
+}
