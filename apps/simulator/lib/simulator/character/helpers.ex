@@ -1,7 +1,7 @@
 defmodule Simulator.Character.Helpers do
   alias Simulator.{Being, Location}
 
-  def run(proximity_stream, being = %Being{location: current_location}) do
+  def run_from_nearest_being(proximity_stream, being = %Being{location: current_location}) do
     nearest_enemy = proximity_stream
     |> nearest_enemy(being)
 
@@ -13,7 +13,7 @@ defmodule Simulator.Character.Helpers do
     {:move, moves}
   end
 
-  def chase(proximity_stream, being = %Being{location: current_location}) do
+  def chase_nearest_being(proximity_stream, being = %Being{location: current_location}) do
     nearest_enemy = proximity_stream
     |> nearest_enemy(being)
 

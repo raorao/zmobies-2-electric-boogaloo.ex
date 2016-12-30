@@ -13,7 +13,7 @@ defmodule Simulator.Character.Zombie do
         proximity_stream
         |> Stream.drop(1)
         |> Stream.take(2)
-        |> Helpers.chase(being)
+        |> Helpers.chase_nearest_being(being)
     end
   end
 end

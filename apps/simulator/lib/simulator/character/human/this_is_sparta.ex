@@ -13,7 +13,7 @@ defmodule Simulator.Character.Human.ThisIsSparta do
         proximity_stream
         |> Stream.drop(1)
         |> Stream.take(5)
-        |> Helpers.chase(being)
+        |> Helpers.chase_nearest_being(being)
     end
   end
 end

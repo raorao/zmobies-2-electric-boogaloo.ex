@@ -5,6 +5,6 @@ defmodule Simulator.Character.Human.RunForTheHills do
   def act(proximity_stream, being) do
     proximity_stream
     |> Stream.take(5)
-    |> Helpers.run(being)
+    |> Helpers.run_from_nearest_being(being)
   end
 end
