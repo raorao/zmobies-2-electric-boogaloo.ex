@@ -57,6 +57,23 @@ defmodule Simulator.Character.Helpers do
     abs(target_x - current_x) + abs(target_y - current_y)
   end
 
+  @spec visible_beings(Enumerable.t, %Being{}) :: {[%Being{}], [%Being{}]}
+  def visible_beings(proximity_stream, %Being{type: ally_type}) do
+    proximity_stream
+    |> Enum.to_list
+    |> List.flatten
+    |> Enum.reduce({[],[]}, fn({_location, lookup}, {allies, enemies}) ->
+      case lookup do
+        :vacant ->
+          {allies, enemies}
+        {:occupied, being = %Being{type: ^ally_type}} ->
+          {allies ++ [being], enemies}
+        {:occupied, being} ->
+          {allies, enemies ++ [being]}
+      end
+    end)
+  end
+
   @spec nearest_enemy(Enumerable.t, %Being{}) :: {%Location{}, %Being{}} | nil
   def nearest_enemy(proximity_stream, being) do
     proximity_stream

@@ -53,6 +53,30 @@ defmodule CharacterHelpersTest do
     end
   end
 
+  describe "visible_beings" do
+    test "returns two empty arrays if there are no beings on the board" do
+      WorldManager.start_link({10,10},{0,0})
+      {:ok, human} = WorldManager.insert(Location.at(x: 1, y: 1), :human)
+
+      stream = Proximity.proximity_stream(human)
+
+      assert Helpers.visible_beings(stream, human) == {[],[]}
+    end
+
+    test "returns two arrays of beings ordered by distance" do
+      WorldManager.start_link({10,10},{0,0})
+      {:ok, human}   = WorldManager.insert(Location.at(x: 1, y: 1), :human)
+      {:ok, human1}  = WorldManager.insert(Location.at(x: 2, y: 2), :human)
+      {:ok, human2}  = WorldManager.insert(Location.at(x: 3, y: 3), :human)
+      {:ok, zombie1} = WorldManager.insert(Location.at(x: 1, y: 2), :zombie)
+      {:ok, zombie2} = WorldManager.insert(Location.at(x: 2, y: 3), :zombie)
+
+      stream = Proximity.proximity_stream(human)
+
+      assert Helpers.visible_beings(stream, human) == {[human1, human2],[zombie1, zombie2]}
+    end
+  end
+
   describe "towards" do
     test "returns a list of possible moves that do not move away from target (0 directions)" do
       WorldManager.start_link({10,10},{0,0})
