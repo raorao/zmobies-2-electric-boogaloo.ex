@@ -53,6 +53,7 @@ class Container extends React.Component {
               top: (being.y * (100/37)) + "%",
               left: (being.x * (100/37)) + "%",
               backgroundColor: being.color,
+              opacity: (being.health / 30) + 0.1
             }
         }
       )

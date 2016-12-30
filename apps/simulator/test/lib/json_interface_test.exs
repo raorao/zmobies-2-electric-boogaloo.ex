@@ -15,8 +15,8 @@ defmodule JsonInterfaceTest do
       WorldManager.insert(Location.at(x: 1, y: 2), :human)
 
       as_json = [
-        %{x: 1, y: 1, type: "zombie", uuid: nil},
-        %{x: 1, y: 2, type: "human", uuid: nil},
+        %{x: 1, y: 1, type: "zombie", uuid: nil, health: nil},
+        %{x: 1, y: 2, type: "human", uuid: nil, health: nil},
       ]
 
       assert JsonInterface.snapshot |> Enum.sort == as_json |> Enum.sort
