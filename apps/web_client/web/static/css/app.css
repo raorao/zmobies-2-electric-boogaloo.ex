@@ -18,8 +18,8 @@ h2.human {
 }
 
 .being {
-  height: 25px;
-  width: 25px;
+  height: 3.5%;
+  width: 3.5%;
   border-radius: 50%;
   position: absolute;
 }
@@ -37,12 +37,19 @@ anchor {
   justify-content: center;
 }
 
-.container {
+.custom-container {
   position: relative;
-  width: 800px;
-  height: 750px;
+  width: 45vw;
+  min-width: 500px;
+  height: 45vw;
+  min-height: 500px;
 }
 
-.container:empty {
+.custom-container:empty {
   height: 0px;
+  min-height: 0px;
+}
+
+body {
+  background-color: #ffeeee;
 }

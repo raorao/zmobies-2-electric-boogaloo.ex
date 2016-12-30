@@ -43,8 +43,8 @@ class Container extends React.Component {
           className: "being " + being.type,
           style:
             {
-              top: (being.y * 20) + "px",
-              left: (being.x * 20) + "px",
+              top: (being.y * (100/37)) + "%",
+              left: (being.x * (100/37)) + "%",
               backgroundColor: being.color,
             }
         }
@@ -73,7 +73,7 @@ class Container extends React.Component {
   render() {
     return (
       React.createElement('div', {},
-        React.createElement('div', {className: "container", key: "rao"},
+        React.createElement('div', {className: "custom-container", key: "rao"},
           this.renderChildren()
         ),
         this.maybeRenderStatus()
