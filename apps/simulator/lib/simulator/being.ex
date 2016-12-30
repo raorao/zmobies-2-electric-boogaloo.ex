@@ -62,7 +62,12 @@ defmodule Simulator.Being do
 
   @spec generate_stat(number) :: number
   defp generate_stat(average) do
-    average + (:rand.uniform(50) - 25)
+    stat = round(average + (15 * Statistics.Distributions.T.rand(30)))
+
+    cond do
+      stat <= 0 || stat >= 100 -> generate_stat(average)
+      true -> stat
+    end
   end
 
   @spec attack(%Being{}, %Being{}) :: {:error, :allies} | {:attacked, %Being{}} | {:attacked, %Being{}, :feed}
