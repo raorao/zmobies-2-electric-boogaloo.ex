@@ -53,6 +53,56 @@ defmodule CharacterHelpersTest do
     end
   end
 
+  describe "nearest_being" do
+    test "returns nil if there are no nearby beings" do
+      WorldManager.start_link({10,10},{0,0})
+      human_location = Location.at(x: 1, y: 1)
+      {:ok, human} = WorldManager.insert(human_location, :human)
+
+      stream = Proximity.proximity_stream(human)
+
+      assert Helpers.nearest_being(stream) == nil
+    end
+
+    test "returns ally if there are no nearby being" do
+      WorldManager.start_link({10,10},{0,0})
+      human_location = Location.at(x: 1, y: 1)
+      {:ok, human} = WorldManager.insert(human_location, :human)
+      ally_location = Location.at(x: 1, y: 2)
+      {:ok, ally} = WorldManager.insert(ally_location, :human)
+
+      stream = Proximity.proximity_stream(human)
+
+      assert Helpers.nearest_being(stream) == {ally_location, ally}
+    end
+
+    test "returns nil if the nearest being is too far away" do
+      WorldManager.start_link({100,100},{0,0})
+      human_location = Location.at(x: 1, y: 1)
+      {:ok, human} = WorldManager.insert(human_location, :human)
+      enemy_location = Location.at(x: 1, y: 99)
+      WorldManager.insert(enemy_location, :human)
+
+      stream = Proximity.proximity_stream(human)
+
+      assert Helpers.nearest_being(stream) == nil
+    end
+
+    test "returns the nearest being" do
+      WorldManager.start_link({10,10},{0,0})
+      human_location = Location.at(x: 1, y: 1)
+      {:ok, human} = WorldManager.insert(human_location, :human)
+      near_enemy_location = Location.at(x: 3, y: 3)
+      {:ok, near_enemy} = WorldManager.insert(near_enemy_location, :zombie)
+      far_enemy_location = Location.at(x: 4, y: 4)
+      WorldManager.insert(far_enemy_location, :zombie)
+
+      stream = Proximity.proximity_stream(human)
+
+      assert Helpers.nearest_being(stream) == {near_enemy_location, near_enemy}
+    end
+  end
+
   describe "visible_beings" do
     test "returns two empty arrays if there are no beings on the board" do
       WorldManager.start_link({10,10},{0,0})

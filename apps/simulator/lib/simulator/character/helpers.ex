@@ -91,7 +91,22 @@ defmodule Simulator.Character.Helpers do
     end
   end
 
+  @spec nearest_being(Enumerable.t) :: {%Location{}, %Being{}} | nil
+  def nearest_being(stream) do
+    case Enum.take(stream, 1) do
+      [] -> nil
+      [ring] ->
+        case Enum.find(ring, &is_being/1) do
+          {location, {:occupied, enemy}} -> {location, enemy}
+          nil -> nearest_being(Stream.drop(stream, 1))
+        end
+    end
+  end
+
   def is_enemy({_, :vacant}, _type), do: false
   def is_enemy({_, {:occupied, %Being{type: type}}}, type), do: false
   def is_enemy({_, {:occupied, %Being{}}}, _type), do: true
+
+  def is_being({_, :vacant}), do: false
+  def is_being({_, {:occupied, %Being{}}}), do: true
 end
