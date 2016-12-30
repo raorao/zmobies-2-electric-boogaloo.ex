@@ -2,10 +2,10 @@ defmodule Simulator.Character.Human.ThisIsSparta do
   alias Simulator.{Being, Proximity, Character.Helpers, Action}
 
   @spec act([Proximity.ring], %Being{}) :: Action.t
-  def act(proximity_stream, being) do
+  def act(proximity_stream, self) do
     adjacent_enemy = proximity_stream
     |> Stream.take(1)
-    |> Helpers.nearest_enemy(being)
+    |> Helpers.nearest_enemy(self)
 
     case adjacent_enemy do
       {enemy_location, _enemy} -> {:attack, enemy_location}
@@ -13,7 +13,7 @@ defmodule Simulator.Character.Human.ThisIsSparta do
         proximity_stream
         |> Stream.drop(1)
         |> Stream.take(5)
-        |> Helpers.chase_nearest_being(being)
+        |> Helpers.chase_nearest_being(self)
     end
   end
 end
