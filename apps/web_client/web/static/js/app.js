@@ -65,7 +65,10 @@ class Container extends React.Component {
 
     if (beings.length == 0) {
       return React.createElement('div', {className: "image-container"},
-        React.createElement('img', {src: "images/loader.gif"})
+        React.createElement('img', {key: "loader", src: "images/loader.gif"}),
+        React.createElement('h2', {key: "status"},
+          React.createElement('a', {href: "/"}, "Restart.")
+        )
       )
     } else if (status == "ongoing" || status == "empty") {
       return null
