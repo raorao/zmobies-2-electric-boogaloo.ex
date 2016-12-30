@@ -21,6 +21,13 @@ import socket from "./socket"
 
 let channel = socket.channel("game:lobby", {})
 
+let bus = new Bacon.Bus()
+
+channel.on("update", function(payload) {
+  bus.push(payload)
+})
+
+let stream = bus.bufferingThrottle(100)
 
 class Container extends React.Component {
 
@@ -30,7 +37,7 @@ class Container extends React.Component {
   }
 
   componentDidMount() {
-    channel.on("update", function(payload) {
+    stream.onValue(function(payload) {
       this.setState({beings: payload.snapshot, status: payload.status})
     }.bind(this))
   }

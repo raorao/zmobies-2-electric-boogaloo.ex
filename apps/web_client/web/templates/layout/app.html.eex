@@ -15,6 +15,7 @@
     <%= render @view_module, @view_template, assigns %>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bacon.js/0.7.89/Bacon.js"></script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
