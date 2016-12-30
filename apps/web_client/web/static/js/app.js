@@ -58,14 +58,14 @@ class Container extends React.Component {
 
     if (beings.length == 0) {
       return React.createElement('h2', {key: "status", className: status},
-        React.createElement('a', {href: "/restart"}, "Restart.")
+        React.createElement('a', {href: "/start"}, "Restart.")
       )
     } else if (status == "ongoing" || status == "empty") {
       return null
     } else {
       return React.createElement('h2', {key: "status", className: status},
         "The " + status + "s have won. ",
-        React.createElement('a', {href: "/restart"}, "Restart.")
+        React.createElement('a', {href: "/start"}, "Restart.")
       )
     }
   }

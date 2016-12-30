@@ -17,7 +17,7 @@ defmodule WebClient.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    get "/restart", PageController, :restart
+    get "/start", PageController, :start
 
   end
 
