@@ -98,8 +98,12 @@ if (document.querySelector('anchor')) {
     document.querySelector('anchor')
   );
 
+
+  console.log("attempting to join.")
   channel.join()
     .receive("error", resp => { console.log("Unable to join", resp) })
+    .receive("ok", resp => { console.log("joined", resp) })
+
 }
 
 
