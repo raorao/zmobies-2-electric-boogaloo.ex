@@ -6,7 +6,7 @@ defmodule Simulator.Proximity do
   # not sure how to describe streams with dialyzer :sweatsmile:
   # @spec proximity_stream(%Being{}) :: Stream.t(ring)
   def proximity_stream(being = %Being{}) do
-    Stream.unfold({1, being.location}, &next_ring/1)
+    Stream.unfold({1, being.location}, &next_ring/1) |> Stream.take(10)
   end
 
   defp next_ring({range, location = %Location{x: current_x, y: current_y}}) do

@@ -60,7 +60,6 @@ defmodule Simulator.Character.Helpers do
   @spec nearest_enemy(Enumerable.t, %Being{}) :: {%Location{}, %Being{}} | nil
   def nearest_enemy(proximity_stream, being) do
     proximity_stream
-    |> Stream.take(10)
     |> do_nearest_enemy(Being.type(being))
   end
 
