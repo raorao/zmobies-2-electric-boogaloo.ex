@@ -1,4 +1,4 @@
-defmodule Zombies.Character.Zombie do
+defmodule Simulator.Character.Zombie do
   alias Simulator.{Being, Movement, Character.Helpers}
 
   @spec act([Movement.ring], %Being{}) :: Movement.t

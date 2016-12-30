@@ -14,9 +14,9 @@ defmodule Simulator.GameManager do
     Simulator.CharacterSupervisor.stop_children
   end
 
-  def init({x, y, humans, zombies, interface_module, interface_args}) do
+  def init({x, y, humans, zombies, interface_module, interface_args, strategy}) do
     children = [
-      supervisor(CharacterSupervisor, []),
+      supervisor(CharacterSupervisor, [strategy]),
       worker(WorldManager, [{x, y}, {humans, zombies}]),
       worker(StatsManager, []),
       worker(interface_module, interface_args),

@@ -57,15 +57,17 @@ class Container extends React.Component {
     let beings = this.state.beings
 
     if (beings.length == 0) {
-      return React.createElement('h2', {key: "status", className: status},
-        React.createElement('a', {href: "/start"}, "Restart.")
+      return React.createElement('div', {key: "strategies", className: "strategies"},
+        React.createElement('a', {href: "/start?strategy=run_for_the_hills", key: 1}, "Always Run."),
+        React.createElement('a', {href: "/start?strategy=this_is_sparta", key: 2}, "Always Fight."),
+        React.createElement('a', {href: "/start?strategy=fight_or_flight", key: 3}, "Sometimes Both.")
       )
     } else if (status == "ongoing" || status == "empty") {
       return null
     } else {
       return React.createElement('h2', {key: "status", className: status},
         "The " + status + "s have won. ",
-        React.createElement('a', {href: "/start"}, "Restart.")
+        React.createElement('a', {href: "/"}, "Restart.")
       )
     }
   }

@@ -2,8 +2,8 @@ defmodule Simulator.CharacterSupervisor do
   use Supervisor
   alias Simulator.Character
 
-  def start_link do
-    Supervisor.start_link(__MODULE__, [], name: :character_supervisor)
+  def start_link(strategy) do
+    Supervisor.start_link(__MODULE__, strategy, name: :character_supervisor)
   end
 
   def start_child(being) do
@@ -16,9 +16,9 @@ defmodule Simulator.CharacterSupervisor do
     |> Enum.map(& Supervisor.terminate_child(:character_supervisor, &1))
   end
 
-  def init(_) do
+  def init(strategy) do
     children = [
-      worker(Character, [], restart: :transient)
+      worker(Character, [strategy], restart: :transient)
     ]
 
     supervise(children, strategy: :simple_one_for_one)

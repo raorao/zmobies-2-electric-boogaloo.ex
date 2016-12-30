@@ -1,4 +1,4 @@
-defmodule Zombies.Character.Human.ThisIsSparta do
+defmodule Simulator.Character.Human.ThisIsSparta do
   alias Simulator.{Being, Movement, Character.Helpers}
 
 

@@ -17,6 +17,20 @@ h2.human {
   color: #41C4FF;
 }
 
+.strategies {
+  padding-top: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.strategies a {
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.1;
+  padding-top: 15px;
+}
+
 .being {
   height: 3.5%;
   width: 3.5%;

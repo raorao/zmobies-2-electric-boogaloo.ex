@@ -6,11 +6,11 @@ defmodule WebClient.PageController do
     render conn, "index.html"
   end
 
-  def start(conn, _params) do
-    case start_simulation do
+  def start(conn, %{"strategy" => strategy}) do
+    case start_simulation(strategy) do
       {:error, {:already_started, _}} ->
         GameManager.stop
-        start_simulation
+        start_simulation(strategy)
       {:ok, _} -> nil
     end
 
@@ -18,16 +18,27 @@ defmodule WebClient.PageController do
   end
 
   defp broadcast({snapshot, status}) do
-    WebClient.Endpoint.broadcast("game:lobby", "update", %{snapshot: snapshot, status: status})
+    WebClient.Endpoint.broadcast(
+      "game:lobby",
+      "update",
+      %{snapshot: snapshot, status: status}
+    )
   end
 
-  defp start_simulation do
+  defp start_simulation(strategy_string) do
+    strategy = case strategy_string do
+      "run_for_the_hills" -> Simulator.Character.Human.RunForTheHills
+      "this_is_sparta" -> Simulator.Character.Human.ThisIsSparta
+      "fight_or_flight" -> Simulator.Character.Human.FightOrFlight
+    end
+
     GameSupervisor.for_json(
       x: 35,
       y: 35,
       humans: 300,
       zombies: 10,
-      broadcast_fn: &broadcast/1
+      broadcast_fn: &broadcast/1,
+      strategy: strategy
     )
   end
 end

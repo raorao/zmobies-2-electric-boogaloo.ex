@@ -2,17 +2,17 @@ defmodule Simulator.Character do
   use GenServer
   alias Simulator.{Movement, Being, Movement, Action, WorldManager}
 
-  def start_link(being) do
+  def start_link(strategy, being) do
     GenServer.start_link(
       __MODULE__,
-      being,
+      {strategy, being},
       name: via_tuple(being)
     )
   end
 
-  def init(being) do
+  def init({strategy, being}) do
     schedule_next_move(being)
-    {:ok, being}
+    {:ok, {strategy, being}}
   end
 
   def stop(being) do
@@ -31,7 +31,7 @@ defmodule Simulator.Character do
     {:via, :gproc, {:n, :l, being.uuid}}
   end
 
-  def handle_cast({:attack, attacker}, victim) do
+  def handle_cast({:attack, attacker}, {strategy, victim}) do
     new_being = case Being.attack(attacker, victim) do
       {:attacked, new_being, response} ->
         WorldManager.update(new_being)
@@ -43,41 +43,41 @@ defmodule Simulator.Character do
       {:error, _} -> victim
     end
 
-    {:noreply, new_being}
+    {:noreply, {strategy, new_being}}
   end
 
-  def handle_cast(:feed, being) do
+  def handle_cast(:feed, {strategy, being}) do
     new_being = Being.feed(being)
     WorldManager.update new_being
-    {:noreply, new_being}
+    {:noreply, {strategy, being}}
   end
 
   def handle_call(:read, _, state) do
     {:reply, state, state}
   end
 
-  def handle_info(:move, being = %Being{health: health}) when health <= 0 do
+  def handle_info(:move, {strategy, being = %Being{health: health}}) when health <= 0 do
     WorldManager.remove(being.location)
     stop(being)
-    {:noreply, being}
+    {:noreply, {strategy, being}}
   end
 
-  def handle_info(:move, being) do
+  def handle_info(:move, {strategy, being}) do
     new_being = being
     |> Movement.proximity_stream
-    |> character_module(being).act(being)
+    |> character_module({strategy, being}).act(being)
     |> execute_action(being)
     |> Being.age
 
     WorldManager.update new_being
     schedule_next_move new_being
-    {:noreply, new_being}
+    {:noreply, {strategy, new_being}}
   end
 
-  defp character_module(being) do
+  defp character_module({strategy, being}) do
     case Being.type(being) do
-      :human -> Zombies.Character.Human.FightOrFlight
-      :zombie -> Zombies.Character.Zombie
+      :human -> strategy
+      :zombie -> Simulator.Character.Zombie
     end
   end
 
