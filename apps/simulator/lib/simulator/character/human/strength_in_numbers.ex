@@ -11,17 +11,18 @@ defmodule Simulator.Character.Human.StrengthInNumbers do
       {enemy_location, _enemy} ->
         {:attack, enemy_location}
       nil ->
-        visible_beings = proximity_stream
+        nearest = proximity_stream
+        |> Stream.drop(1)
         |> Stream.take(5)
-        |> Helpers.visible_beings(self)
+        |> Helpers.nearest_being
 
-        moves = case visible_beings do
-          {[], []} ->
+        moves = case nearest do
+          nil ->
             Helpers.random(self.location)
-          {[nearest_human | _], []} ->
-            Helpers.towards(nearest_human.location, self.location)
-          {_, [nearest_zombie | _ ]} ->
-            Helpers.away_from(nearest_zombie.location, self.location)
+          {location, %Being{type: :zombie}} ->
+            Helpers.away_from(location, self.location)
+          {location, %Being{type: :human}} ->
+            Helpers.towards(location, self.location)
         end
 
         {:move, moves}
