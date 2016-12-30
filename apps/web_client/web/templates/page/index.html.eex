@@ -1,6 +1,7 @@
 <h1>Zmobies!</h1>
 <section class="strategies">
-  <a href="/start?strategy=run_for_the_hills"> Always Run </a>
-  <a href="/start?strategy=this_is_sparta"> Always Fight </a>
-  <a href="/start?strategy=fight_or_flight"> Sometimes Both </a>
+  <a href="/start?strategy=run_for_the_hills"> Always Run</a>
+  <a href="/start?strategy=this_is_sparta"> Always Fight</a>
+  <a href="/start?strategy=fight_or_flight"> Fight if Near </a>
+  <a href="/start?strategy=strength_in_numbers"> Strength in Numbers</a>
 </section>

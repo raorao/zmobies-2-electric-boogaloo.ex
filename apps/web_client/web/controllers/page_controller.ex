@@ -34,6 +34,7 @@ defmodule WebClient.PageController do
       "run_for_the_hills" -> Simulator.Character.Human.RunForTheHills
       "this_is_sparta" -> Simulator.Character.Human.ThisIsSparta
       "fight_or_flight" -> Simulator.Character.Human.FightOrFlight
+      "strength_in_numbers" -> Simulator.Character.Human.StrengthInNumbers
     end
 
     GameSupervisor.for_json(
