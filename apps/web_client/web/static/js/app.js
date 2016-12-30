@@ -27,7 +27,7 @@ channel.on("update", function(payload) {
   bus.push(payload)
 })
 
-let stream = bus.bufferingThrottle(100)
+let stream = bus.delay(1000).bufferingThrottle(100)
 
 class Container extends React.Component {
 
@@ -64,10 +64,8 @@ class Container extends React.Component {
     let beings = this.state.beings
 
     if (beings.length == 0) {
-      return React.createElement('div', {key: "strategies", className: "strategies"},
-        React.createElement('a', {href: "/start?strategy=run_for_the_hills", key: 1}, "Always Run."),
-        React.createElement('a', {href: "/start?strategy=this_is_sparta", key: 2}, "Always Fight."),
-        React.createElement('a', {href: "/start?strategy=fight_or_flight", key: 3}, "Sometimes Both.")
+      return React.createElement('div', {className: "image-container"},
+        React.createElement('img', {src: "images/loader.gif"})
       )
     } else if (status == "ongoing" || status == "empty") {
       return null
@@ -91,10 +89,14 @@ class Container extends React.Component {
   }
 }
 
-ReactDOM.render(
-  React.createElement(Container, {}, []),
-  document.querySelector('anchor')
-);
+if (document.querySelector('anchor')) {
+  ReactDOM.render(
+    React.createElement(Container, {}, []),
+    document.querySelector('anchor')
+  );
 
-channel.join()
-  .receive("error", resp => { console.log("Unable to join", resp) })
+  channel.join()
+    .receive("error", resp => { console.log("Unable to join", resp) })
+}
+
+

@@ -1,2 +1,6 @@
 <h1>Zmobies!</h1>
-<anchor></anchor>
+<section class="strategies">
+  <a href="/start?strategy=run_for_the_hills"> Always Run </a>
+  <a href="/start?strategy=this_is_sparta"> Always Fight </a>
+  <a href="/start?strategy=fight_or_flight"> Sometimes Both </a>
+</section>

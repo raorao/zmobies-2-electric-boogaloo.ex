@@ -6,6 +6,10 @@ defmodule WebClient.PageController do
     render conn, "index.html"
   end
 
+  def simulation(conn, _params) do
+    render conn, "simulation.html"
+  end
+
   def start(conn, %{"strategy" => strategy}) do
     case start_simulation(strategy) do
       {:error, {:already_started, _}} ->
@@ -14,7 +18,7 @@ defmodule WebClient.PageController do
       {:ok, _} -> nil
     end
 
-    redirect conn, to: "/"
+    redirect conn, to: "/simulation"
   end
 
   defp broadcast({snapshot, status}) do

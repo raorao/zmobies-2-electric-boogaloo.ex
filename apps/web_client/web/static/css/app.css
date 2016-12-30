@@ -64,6 +64,12 @@ anchor {
   min-height: 0px;
 }
 
+.image-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 80px
+}
+
 body {
   background-color: #ffeeee;
 }
