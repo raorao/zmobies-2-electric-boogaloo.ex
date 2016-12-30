@@ -144,9 +144,7 @@ defmodule CharacterHelpersTest do
       target_location = Location.at(x: 1, y: 3)
 
       possible_moves = [
-        Location.at(x: 0, y: 2),
-        Location.at(x: 2, y: 2),
-        Location.at(x: 1, y: 2)
+        Location.at(x: 1, y: 2),
       ] |> Enum.sort
 
       assert Helpers.towards(target_location, location) |> Enum.sort == possible_moves
@@ -159,12 +157,9 @@ defmodule CharacterHelpersTest do
       target_location = Location.at(x: 3, y: 3)
 
       possible_moves = [
-        Location.at(x: 0, y: 2),
         Location.at(x: 1, y: 2),
-        Location.at(x: 2, y: 0),
         Location.at(x: 2, y: 1),
         Location.at(x: 2, y: 2),
-
       ] |> Enum.sort
 
       assert Helpers.towards(target_location, location) |> Enum.sort == possible_moves
@@ -199,11 +194,9 @@ defmodule CharacterHelpersTest do
       target_location = Location.at(x: 3, y: 2)
 
       possible_moves = [
-        Location.at(x: 3, y: 3),
         Location.at(x: 2, y: 3),
         Location.at(x: 1, y: 3),
         Location.at(x: 1, y: 2),
-        Location.at(x: 3, y: 1),
         Location.at(x: 2, y: 1),
         Location.at(x: 1, y: 1),
       ] |> Enum.sort
@@ -218,11 +211,9 @@ defmodule CharacterHelpersTest do
       target_location = Location.at(x: 3, y: 3)
 
       possible_moves = [
-        Location.at(x: 1, y: 3),
-        Location.at(x: 1, y: 2),
-        Location.at(x: 3, y: 1),
-        Location.at(x: 2, y: 1),
         Location.at(x: 1, y: 1),
+        Location.at(x: 1, y: 2),
+        Location.at(x: 2, y: 1),
       ] |> Enum.sort
 
       assert Helpers.away_from(target_location, location) |> Enum.sort == possible_moves

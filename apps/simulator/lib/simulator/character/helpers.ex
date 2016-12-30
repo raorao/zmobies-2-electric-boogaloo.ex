@@ -28,14 +28,14 @@ defmodule Simulator.Character.Helpers do
   @spec towards(%Location{}, %Location{}) :: [%Location{}]
   def towards(target, current) do
     all_possible_locations(current)
-    |> Enum.filter(fn(location) -> distance(current, target) >= distance(location, target) end)
+    |> Enum.filter(fn(location) -> distance(current, target) > distance(location, target) end)
     |> Enum.shuffle
   end
 
   @spec away_from(%Location{}, %Location{}) :: [%Location{}]
   def away_from(target, current) do
     all_possible_locations(current)
-    |> Enum.filter(fn(location) -> distance(current, target) <= distance(location, target) end)
+    |> Enum.filter(fn(location) -> distance(current, target) < distance(location, target) end)
     |> Enum.shuffle
   end
 
