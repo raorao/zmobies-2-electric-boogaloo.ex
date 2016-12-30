@@ -1,6 +1,6 @@
 defmodule Simulator.Character do
   use GenServer
-  alias Simulator.{Movement, Being, Movement, Action, WorldManager}
+  alias Simulator.{Proximity, Being, Proximity, Action, WorldManager}
 
   def start_link(strategy, being) do
     GenServer.start_link(
@@ -64,7 +64,7 @@ defmodule Simulator.Character do
 
   def handle_info(:move, {strategy, being}) do
     new_being = being
-    |> Movement.proximity_stream
+    |> Proximity.proximity_stream
     |> character_module({strategy, being}).act(being)
     |> execute_action(being)
     |> Being.age

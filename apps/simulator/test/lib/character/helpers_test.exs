@@ -1,6 +1,6 @@
 defmodule CharacterHelpersTest do
   use ExUnit.Case
-  alias Simulator.{Movement, WorldManager, Location, Character.Helpers}
+  alias Simulator.{Proximity, WorldManager, Location, Character.Helpers}
   doctest Helpers
 
   describe "nearest_enemy" do
@@ -9,7 +9,7 @@ defmodule CharacterHelpersTest do
       human_location = Location.at(x: 1, y: 1)
       {:ok, human} = WorldManager.insert(human_location, :human)
 
-      stream = Movement.proximity_stream(human)
+      stream = Proximity.proximity_stream(human)
 
       assert Helpers.nearest_enemy(stream, human) == nil
     end
@@ -21,7 +21,7 @@ defmodule CharacterHelpersTest do
       ally_location = Location.at(x: 1, y: 2)
       WorldManager.insert(ally_location, :human)
 
-      stream = Movement.proximity_stream(human)
+      stream = Proximity.proximity_stream(human)
 
       assert Helpers.nearest_enemy(stream, human) == nil
     end
@@ -33,7 +33,7 @@ defmodule CharacterHelpersTest do
       enemy_location = Location.at(x: 1, y: 99)
       WorldManager.insert(enemy_location, :human)
 
-      stream = Movement.proximity_stream(human)
+      stream = Proximity.proximity_stream(human)
 
       assert Helpers.nearest_enemy(stream, human) == nil
     end
@@ -47,7 +47,7 @@ defmodule CharacterHelpersTest do
       far_enemy_location = Location.at(x: 4, y: 4)
       WorldManager.insert(far_enemy_location, :zombie)
 
-      stream = Movement.proximity_stream(human)
+      stream = Proximity.proximity_stream(human)
 
       assert Helpers.nearest_enemy(stream, human) == {near_enemy_location, near_enemy}
     end

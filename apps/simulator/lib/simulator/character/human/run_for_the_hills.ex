@@ -1,7 +1,7 @@
 defmodule Simulator.Character.Human.RunForTheHills do
-  alias Simulator.{Being, Movement, Character.Helpers}
+  alias Simulator.{Being, Proximity, Character.Helpers, Action}
 
-  @spec act([Movement.ring], %Being{}) :: Movement.t
+  @spec act([Proximity.ring], %Being{}) :: Action.t
   def act(proximity_stream, being) do
     proximity_stream
     |> Stream.take(5)

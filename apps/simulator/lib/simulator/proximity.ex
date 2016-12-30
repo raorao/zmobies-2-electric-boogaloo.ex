@@ -1,7 +1,5 @@
-defmodule Simulator.Movement do
+defmodule Simulator.Proximity do
   alias Simulator.{Location, WorldManager, World, Being}
-
-  @type t :: {:attack, %Location{}} | {:move, [%Location{}]}
 
   @type ring :: { %Location{}, World.bounded_lookup }
 

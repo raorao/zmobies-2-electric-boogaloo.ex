@@ -1,6 +1,8 @@
 defmodule Simulator.Action do
   alias Simulator.{WorldManager, Location, Being, Character}
 
+  @type t :: {:attack, %Location{}} | {:move, [%Location{}]}
+
   def move([], being), do: being
 
   @spec move([%Location{}], %Being{}) :: %Being{}
