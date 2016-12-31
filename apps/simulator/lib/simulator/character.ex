@@ -19,8 +19,8 @@ defmodule Simulator.Character do
     GenServer.stop(via_tuple(being))
   end
 
-  def attack(attacker, victim) do
-    GenServer.cast(via_tuple(victim), {:attack, attacker})
+  def resolve_attack(attacker, victim) do
+    GenServer.cast(via_tuple(victim), {:resolve_attack, attacker})
   end
 
   def read(being) do
@@ -31,7 +31,7 @@ defmodule Simulator.Character do
     {:via, :gproc, {:n, :l, being.uuid}}
   end
 
-  def handle_cast({:attack, attacker}, {strategy, victim}) do
+  def handle_cast({:resolve_attack, attacker}, {strategy, victim}) do
     new_being = case Being.attack(attacker, victim) do
       {:attacked, new_being, response} ->
         WorldManager.update(new_being)

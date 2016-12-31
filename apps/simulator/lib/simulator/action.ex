@@ -16,7 +16,7 @@ defmodule Simulator.Action do
   @spec attack(%Being{}, %Location{}) :: %Being{}
   def attack(attacker, location) do
     case WorldManager.at(location) do
-      {:occupied, victim} -> Character.attack(attacker, victim)
+      {:occupied, victim} -> Character.resolve_attack(attacker, victim)
       :vacant -> nil
     end
 
