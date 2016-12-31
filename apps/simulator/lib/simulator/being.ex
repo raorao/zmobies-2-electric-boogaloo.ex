@@ -37,7 +37,7 @@ defmodule Simulator.Being do
   end
 
   @spec hurt(%Being{}, %Being{}) :: %Being{}
-  def hurt(attacker, victim), do: %{ victim | health: victim.health - div(attacker.health, 2) + 2 }
+  def hurt(attacker, victim), do: %{ victim | health: victim.health - div(attacker.health, 2)}
 
   @spec feed(%Being{}) :: %Being{}
   def feed(being = %Being{health: health}), do: %{ being | health: health + 10 }
