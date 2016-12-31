@@ -23,6 +23,10 @@ defmodule Simulator.Character do
     GenServer.cast(via_tuple(victim), {:resolve_attack, attacker})
   end
 
+  def resolve_talk(speaker, listener, message) do
+    GenServer.cast(via_tuple(listener), {:listen, speaker, message})
+  end
+
   def read(being) do
     GenServer.call(via_tuple(being), :read)
   end
@@ -44,6 +48,10 @@ defmodule Simulator.Character do
     end
 
     {:noreply, {strategy, new_being}}
+  end
+
+  def handle_cast({:listen, speaker, message}, {strategy, being}) do
+    {:noreply, {strategy, being}}
   end
 
   def handle_cast(:feed, {strategy, being}) do
@@ -90,6 +98,7 @@ defmodule Simulator.Character do
     case action do
       {:move, moves} -> Action.move(moves, being)
       {:attack, enemy_location} -> Action.attack(being, enemy_location)
+      {:talk, ally_locations, message} -> Action.talk(being, ally_locations, message)
     end
   end
 end

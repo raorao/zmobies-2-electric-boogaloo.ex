@@ -30,7 +30,7 @@ defmodule Simulator.Action do
     any(),
     (%Being{}, %Being{}, any() -> %Being{}))
     :: %Being{}
-  def talk(speaker, locations, message, resolve_fn) do
+  def talk(speaker, locations, message, resolve_fn \\ &Character.resolve_talk/3) do
     Enum.each(locations, fn (location) ->
       case WorldManager.at(location) do
         {:occupied, listener} -> resolve_fn.(speaker, listener, message)
