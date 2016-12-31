@@ -84,7 +84,7 @@ defmodule ActionTest do
       location = Location.at(x: 1, y: 1)
       {:ok, attacker} = WorldManager.insert(location, :zombie)
       victim_location = Location.at(x: 1, y: 2)
-      {:ok, victim} = WorldManager.insert(victim_location, :human)
+      WorldManager.insert(victim_location, :human)
 
       resolve_fn = fn(_, _) ->
         send self, :resolved_attack
