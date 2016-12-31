@@ -13,7 +13,7 @@ defmodule Simulator.Character.Human.StrengthInNumbers do
       nil ->
         nearest = proximity_stream
         |> Stream.drop(1)
-        |> Stream.take(5)
+        |> Stream.take(6)
         |> Helpers.nearest_being
 
         moves = case nearest do

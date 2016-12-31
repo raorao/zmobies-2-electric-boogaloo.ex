@@ -12,7 +12,7 @@ defmodule Simulator.Character.Human.FightOrFlight do
       nil ->
         proximity_stream
         |> Stream.drop(1)
-        |> Stream.take(5)
+        |> Stream.take(6)
         |> Helpers.run_from_nearest_being(self)
     end
   end
