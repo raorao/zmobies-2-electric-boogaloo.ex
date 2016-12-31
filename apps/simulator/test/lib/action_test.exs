@@ -56,4 +56,43 @@ defmodule ActionTest do
       assert WorldManager.at(location) == {:occupied, being}
     end
   end
+
+  describe "attack" do
+    test "successfully attacks at a given location" do
+      WorldManager.start_link({10,10},{0,0})
+
+      location = Location.at(x: 1, y: 1)
+      {:ok, attacker} = WorldManager.insert(location, :zombie)
+      victim_location = Location.at(x: 1, y: 2)
+      {:ok, victim} = WorldManager.insert(victim_location, :human)
+
+      resolve_fn = fn(attacker_being, victim_being) ->
+        assert attacker_being == attacker
+        assert victim_being == victim
+
+        send self, :resolved_attack
+      end
+
+      assert Action.attack(attacker, victim_location, resolve_fn) == attacker
+
+      assert_receive :resolved_attack
+    end
+
+    test "unsuccessfully attacks at a given location" do
+      WorldManager.start_link({10,10},{0,0})
+
+      location = Location.at(x: 1, y: 1)
+      {:ok, attacker} = WorldManager.insert(location, :zombie)
+      victim_location = Location.at(x: 1, y: 2)
+      {:ok, victim} = WorldManager.insert(victim_location, :human)
+
+      resolve_fn = fn(_, _) ->
+        send self, :resolved_attack
+      end
+
+      assert Action.attack(attacker, Location.at(x: 2, y: 2), resolve_fn) == attacker
+
+      refute_receive :resolved_attack
+    end
+  end
 end
