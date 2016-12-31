@@ -23,4 +23,21 @@ defmodule Simulator.Action do
 
     attacker
   end
+
+  @spec talk(
+    %Being{},
+    [%Location{}],
+    any(),
+    (%Being{}, %Being{}, any() -> %Being{}))
+    :: %Being{}
+  def talk(speaker, locations, message, resolve_fn) do
+    Enum.each(locations, fn (location) ->
+      case WorldManager.at(location) do
+        {:occupied, listener} -> resolve_fn.(speaker, listener, message)
+        :vacant -> nil
+      end
+    end)
+
+    speaker
+  end
 end

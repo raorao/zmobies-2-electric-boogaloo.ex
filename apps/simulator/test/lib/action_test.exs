@@ -95,4 +95,44 @@ defmodule ActionTest do
       refute_receive :resolved_attack
     end
   end
+
+  describe "talk" do
+    test "communicates to all given locations if valid" do
+      WorldManager.start_link({10,10},{0,0})
+
+      location = Location.at(x: 2, y: 2)
+      {:ok, speaker} = WorldManager.insert(location, :human)
+      first_listener_location = Location.at(x: 1, y: 2)
+      {:ok, first_listener} = WorldManager.insert(first_listener_location, :human)
+      second_listener_location = Location.at(x: 2, y: 1)
+      {:ok, second_listener} = WorldManager.insert(second_listener_location, :human)
+      third_listener_location = Location.at(x: 1, y: 1)
+      {:ok, third_listener} = WorldManager.insert(third_listener_location, :human)
+      bad_listener_location = Location.at(x: 3, y: 3)
+
+      message = {:run!, Location.at(x: 1, y: 1)}
+
+      resolve_fn = fn(^speaker, listener, ^message) ->
+        cond do
+          listener == first_listener ->
+            send self, :resolved_talk_for_first_listener
+          listener == second_listener ->
+            send self, :resolved_talk_for_second_listener
+          listener == third_listener ->
+            send self, :resolved_talk_for_third_listener
+        end
+      end
+
+      assert Action.talk(
+        speaker,
+        [first_listener_location, second_listener_location, bad_listener_location],
+        message,
+        resolve_fn
+      ) == speaker
+
+      assert_receive :resolved_talk_for_first_listener
+      assert_receive :resolved_talk_for_second_listener
+      refute_receive :resolved_talk_for_third_listener
+    end
+  end
 end
