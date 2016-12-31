@@ -32,7 +32,6 @@ defmodule Simulator.Mixfile do
     [
       { :uuid, "~> 1.1" },
       { :gproc, "~> 0.6.1" },
-      { :dialyxir, "~> 0.4", only: [:dev], runtime: false},
       { :statistics, "~> 0.4.0" },
     ]
   end
