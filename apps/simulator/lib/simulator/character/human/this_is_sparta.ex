@@ -1,7 +1,8 @@
 defmodule Simulator.Character.Human.ThisIsSparta do
-  alias Simulator.{Being, Proximity, Character.Helpers, Action}
+  use Human
 
-  @spec act([Proximity.ring], %Being{}, any()) :: Action.t | {Action.t, any()}
+  alias Simulator.{Character.Helpers}
+
   def act(proximity_stream, self, _) do
     adjacent_enemy = proximity_stream
     |> Stream.take(1)
