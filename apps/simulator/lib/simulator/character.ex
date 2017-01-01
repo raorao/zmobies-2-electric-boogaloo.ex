@@ -12,7 +12,8 @@ defmodule Simulator.Character do
 
   def init({strategy, being}) do
     schedule_next_move(being)
-    {:ok, {strategy, being, :custom_state}}
+    initial_custom_state = character_module({strategy, being}).initial_state(being)
+    {:ok, {strategy, being, initial_custom_state}}
   end
 
   def stop(being) do
@@ -51,7 +52,9 @@ defmodule Simulator.Character do
   end
 
   def handle_cast({:listen, speaker, message}, {strategy, being, custom_state}) do
-    {:noreply, {strategy, being, custom_state}}
+    new_custom_state = character_module({strategy, being}).listen(message, speaker, being, custom_state)
+
+    {:noreply, {strategy, being, new_custom_state}}
   end
 
   def handle_cast(:feed, {strategy, being, custom_state}) do
