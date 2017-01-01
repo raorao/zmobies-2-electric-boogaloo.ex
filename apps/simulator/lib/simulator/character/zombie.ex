@@ -1,8 +1,8 @@
 defmodule Simulator.Character.Zombie do
   alias Simulator.{Being, Proximity, Character.Helpers, Action}
 
-  @spec act([Proximity.ring], %Being{}) :: Action.t
-  def act(proximity_stream, self) do
+  @spec act([Proximity.ring], %Being{}, any()) :: Action.t | {Action.t, any()}
+  def act(proximity_stream, self, _) do
     adjacent_enemy = proximity_stream
     |> Stream.take(1)
     |> Helpers.nearest_enemy(self)

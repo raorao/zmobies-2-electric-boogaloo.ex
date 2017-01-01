@@ -12,7 +12,7 @@ defmodule Simulator.Character do
 
   def init({strategy, being}) do
     schedule_next_move(being)
-    {:ok, {strategy, being}}
+    {:ok, {strategy, being, :custom_state}}
   end
 
   def stop(being) do
@@ -35,7 +35,7 @@ defmodule Simulator.Character do
     {:via, :gproc, {:n, :l, being.uuid}}
   end
 
-  def handle_cast({:resolve_attack, attacker}, {strategy, victim}) do
+  def handle_cast({:resolve_attack, attacker}, {strategy, victim, custom_state}) do
     new_being = case Being.attack(attacker, victim) do
       {:attacked, new_being, response} ->
         WorldManager.update(new_being)
@@ -47,39 +47,40 @@ defmodule Simulator.Character do
       {:error, _} -> victim
     end
 
-    {:noreply, {strategy, new_being}}
+    {:noreply, {strategy, new_being, custom_state}}
   end
 
-  def handle_cast({:listen, speaker, message}, {strategy, being}) do
-    {:noreply, {strategy, being}}
+  def handle_cast({:listen, speaker, message}, {strategy, being, custom_state}) do
+    {:noreply, {strategy, being, custom_state}}
   end
 
-  def handle_cast(:feed, {strategy, being}) do
+  def handle_cast(:feed, {strategy, being, custom_state}) do
     new_being = Being.feed(being)
     WorldManager.update new_being
-    {:noreply, {strategy, being}}
+    {:noreply, {strategy, being, custom_state}}
   end
 
   def handle_call(:read, _, state) do
     {:reply, state, state}
   end
 
-  def handle_info(:move, {strategy, being = %Being{health: health}}) when health <= 0 do
+  def handle_info(:move, {strategy, being = %Being{health: health}, custom_state}) when health <= 0 do
     WorldManager.remove(being.location)
     stop(being)
-    {:noreply, {strategy, being}}
+    {:noreply, {strategy, being, custom_state}}
   end
 
-  def handle_info(:move, {strategy, being}) do
-    new_being = being
+  def handle_info(:move, {strategy, being, custom_state}) do
+    {new_being, new_custom_state} = being
     |> Proximity.proximity_stream
-    |> character_module({strategy, being}).act(being)
-    |> execute_action(being)
-    |> Being.age
+    |> character_module({strategy, being}).act(being, custom_state)
+    |> execute_action(being, custom_state)
+
+    new_being = Being.age new_being
 
     WorldManager.update new_being
     schedule_next_move new_being
-    {:noreply, {strategy, new_being}}
+    {:noreply, {strategy, new_being, new_custom_state}}
   end
 
   defp character_module({strategy, being}) do
@@ -94,11 +95,19 @@ defmodule Simulator.Character do
     Process.send_after(self, :move, interval)
   end
 
-  defp execute_action(action, being) do
-    case action do
-      {:move, moves} -> Action.move(moves, being)
-      {:attack, enemy_location} -> Action.attack(being, enemy_location)
-      {:talk, ally_locations, message} -> Action.talk(being, ally_locations, message)
-    end
+  defp execute_action({:move, moves}, being, custom_state) do
+    { Action.move(moves, being), custom_state }
+  end
+
+  defp execute_action({:attack, enemy_location}, being, custom_state) do
+    { Action.attack(being, enemy_location), custom_state }
+  end
+
+  defp execute_action({:talk, ally_locations, message}, being, custom_state) do
+    { Action.talk(being, ally_locations, message), custom_state }
+  end
+
+  defp execute_action({action, new_custom_state}, being, _) do
+    execute_action(action, being, new_custom_state)
   end
 end
