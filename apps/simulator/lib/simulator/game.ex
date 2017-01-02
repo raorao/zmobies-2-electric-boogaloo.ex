@@ -24,4 +24,12 @@ defmodule Simulator.Game do
 
     supervise(children, strategy: :one_for_one)
   end
+
+  def init({filename, broadcast_fn}) do
+    children = [
+      worker(Simulator.Interface.FlatFile, [filename, broadcast_fn]),
+    ]
+
+    supervise(children, strategy: :one_for_one)
+  end
 end

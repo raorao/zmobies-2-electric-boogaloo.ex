@@ -27,6 +27,20 @@ defmodule Simulator.GameSupervisor do
     )
   end
 
+  def to_file(x: x, y: y, humans: humans, zombies: zombies, strategy: strategy) do
+    Supervisor.start_child(
+      :game_supervisor,
+      [{x, y, humans, zombies, Interface.FlatFileGenerator, [], strategy}]
+    )
+  end
+
+  def from_file(filename, broadcast_fn) do
+    Supervisor.start_child(
+      :game_supervisor,
+      [{filename, broadcast_fn}]
+    )
+  end
+
   def init(:ok) do
     children = [ supervisor(Game, [], restart: :transient) ]
 

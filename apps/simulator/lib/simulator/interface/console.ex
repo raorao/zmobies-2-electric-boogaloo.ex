@@ -55,7 +55,13 @@ defmodule Simulator.Interface.Console do
     IO.puts new_board
   end
 
+  def from_broadcast({snapshot, _status}) do
+    IO.inspect snapshot
+  end
+
   defmodule Presenter do
+
+
     def to_s(colors: colors) do
       sorted = :world
       |> generate_sorted
