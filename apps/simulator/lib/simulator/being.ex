@@ -91,7 +91,7 @@ defmodule Simulator.Being do
       :human  -> "human"
     end
 
-    %{x: x, y: y, type: type_string, uuid: uuid, health: health}
+    [x, y, type_string, uuid, health]
   end
 
   def to_s(%Being{type: type}, colors: colors) do

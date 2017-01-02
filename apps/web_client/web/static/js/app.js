@@ -44,16 +44,16 @@ class Container extends React.Component {
 
   renderChildren() {
     return this.state.beings.map(function(being) {
+      let [x, y, type, uuid, health] = being
       return React.createElement("div",
         {
-          key: being.uuid,
-          className: "being " + being.type,
+          key: uuid,
+          className: "being " + type,
           style:
             {
-              top: (being.y * (100/37)) + "%",
-              left: (being.x * (100/37)) + "%",
-              backgroundColor: being.color,
-              opacity: (being.type == "zombie" ? (being.health / 30) + 0.1 : 1)
+              top: (y * (100/37)) + "%",
+              left: (x * (100/37)) + "%",
+              opacity: (type == "zombie" ? (health / 30) + 0.1 : 1)
             }
         }
       )
