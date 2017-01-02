@@ -1,5 +1,5 @@
 defmodule Simulator.Interface.FlatFileGenerator do
-  alias Simulator.{Being, WorldManager, StatsManager}
+  alias Simulator.{Being, WorldManager, StatsManager, Location}
   use GenServer
 
   def start_link do
@@ -55,6 +55,12 @@ defmodule Simulator.Interface.FlatFileGenerator do
 
   def snapshot do
     WorldManager.all
-    |> Enum.map(&Being.as_json/1)
+    |> Enum.map(fn({location, being}) ->
+      {
+        Location.as_json(location),
+        Being.as_json(being)
+      }
+    end)
+    |> Enum.into(%{})
   end
 end

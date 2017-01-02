@@ -30,7 +30,7 @@ defmodule Simulator.World do
   end
 
   @spec all() :: [%Being{}]
-  def all, do: :ets.match(:world, {:"_", :"$1"}) |> List.flatten
+  def all, do: :ets.match(:world, :"$1") |> List.flatten
 
   def insert(%Location{x: x, y: y}, _, {x_lim, y_lim})
     when out_of_bounds(x, y, x_lim, y_lim),

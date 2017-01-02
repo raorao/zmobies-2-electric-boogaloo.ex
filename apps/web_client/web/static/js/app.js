@@ -43,7 +43,7 @@ class Container extends React.Component {
   }
 
   renderChildren() {
-    return this.state.beings.map(function(being) {
+    return Object.values(this.state.beings).map(function(being) {
       return React.createElement("div",
         {
           key: being.uuid,
