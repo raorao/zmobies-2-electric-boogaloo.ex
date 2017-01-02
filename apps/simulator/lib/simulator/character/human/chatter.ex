@@ -15,7 +15,7 @@ defmodule Simulator.Character.Human.Chatter do
         { {:attack, nearest.location}, custom_state }
       [] ->
         case custom_state do
-          {:run, from, 0} ->
+          {:run, _from, 0} ->
             watch_for_enemies(proximity_stream, adjacent_allies, self)
           {:run, from, count} ->
             {
