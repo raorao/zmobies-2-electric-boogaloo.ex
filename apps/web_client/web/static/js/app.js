@@ -44,10 +44,12 @@ class Container extends React.Component {
 
   renderChildren() {
     return this.state.beings.map(function(being) {
-      let [x, y, type, uuid, health] = being
+      let [x, y, typeInt, health] = being
+      let type = typeInt == 0 ? "zombie" : "human"
+
       return React.createElement("div",
         {
-          key: uuid,
+          key: being.join('/'),
           className: "being " + type,
           style:
             {

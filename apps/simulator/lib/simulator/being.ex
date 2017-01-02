@@ -86,12 +86,12 @@ defmodule Simulator.Being do
   end
 
   def as_json(%Being{location: %Location{x: x, y: y}, health: health, uuid: uuid, type: type}) do
-    type_string = case type do
-      :zombie -> "zombie"
-      :human  -> "human"
+    type_int = case type do
+      :zombie -> 0
+      :human  -> 1
     end
 
-    [x, y, type_string, uuid, health]
+    [x, y, type_int, health]
   end
 
   def to_s(%Being{type: type}, colors: colors) do
