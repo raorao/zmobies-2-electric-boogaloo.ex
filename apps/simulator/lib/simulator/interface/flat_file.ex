@@ -27,7 +27,7 @@ defmodule Simulator.Interface.FlatFile do
     {:noreply, {broadcast_fn, filestream}}
   end
 
-  def handle_info(:save, {broadcast_fn, filestream}) do
+  def handle_info(:print, {broadcast_fn, filestream}) do
     case Enum.take(filestream, 1) do
       [current_entry] ->
         %{"status" => status, "snapshot" => snapshot} = current_entry
@@ -46,6 +46,6 @@ defmodule Simulator.Interface.FlatFile do
   end
 
   defp schedule_next_print do
-    Process.send_after(self, :save, 60)
+    Process.send_after(self, :print, 60)
   end
 end
