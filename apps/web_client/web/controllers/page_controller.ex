@@ -36,6 +36,7 @@ defmodule WebClient.PageController do
       "fight_or_flight" -> Simulator.Character.Human.FightOrFlight
       "strength_in_numbers" -> Simulator.Character.Human.StrengthInNumbers
       "dont_look_back" -> Simulator.Character.Human.DontLookBack
+      "chatter" -> Simulator.Character.Human.Chatter
     end
 
     GameSupervisor.for_json(
