@@ -1,4 +1,4 @@
-defmodule Simulator.JsonInterface do
+defmodule Simulator.Interface.Json do
   alias Simulator.{Being, WorldManager, StatsManager}
   use GenServer
 

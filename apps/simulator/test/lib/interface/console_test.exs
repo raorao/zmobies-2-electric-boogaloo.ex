@@ -1,7 +1,7 @@
-defmodule SimulatorConsoleInterfaceTest do
+defmodule SimulatorConsoleTest do
   use ExUnit.Case
-  alias Simulator.{Being, ConsoleInterface, ConsoleInterface.Presenter, World}
-  doctest ConsoleInterface
+  alias Simulator.{Being, Interface.Console, Interface.Console.Presenter, World}
+  doctest Console
 
   describe "Presenter" do
     test "can print an empty list" do

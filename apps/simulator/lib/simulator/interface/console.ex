@@ -1,5 +1,5 @@
-defmodule Simulator.ConsoleInterface do
-  alias Simulator.{StatsManager, Being, World, ConsoleInterface.Presenter}
+defmodule Simulator.Interface.Console do
+  alias Simulator.{StatsManager, Being, World, Interface.Console.Presenter}
   use GenServer
 
   def start_link do

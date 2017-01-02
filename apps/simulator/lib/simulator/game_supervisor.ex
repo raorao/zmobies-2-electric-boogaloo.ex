@@ -1,6 +1,6 @@
 defmodule Simulator.GameSupervisor do
   use Supervisor
-  alias Simulator.{GameManager, JsonInterface, ConsoleInterface}
+  alias Simulator.{GameManager, Interface}
 
   def start_link do
     Supervisor.start_link(__MODULE__, :ok, name: :game_supervisor)
@@ -16,14 +16,14 @@ defmodule Simulator.GameSupervisor do
   ) do
     Supervisor.start_child(
       :game_supervisor,
-      [{x, y, humans, zombies, JsonInterface, [broadcast_fn], strategy}]
+      [{x, y, humans, zombies, Interface.Json, [broadcast_fn], strategy}]
     )
   end
 
   def for_console(x: x, y: y, humans: humans, zombies: zombies, strategy: strategy) do
     Supervisor.start_child(
       :game_supervisor,
-      [{x, y, humans, zombies, ConsoleInterface, [], strategy}]
+      [{x, y, humans, zombies, Interface.Console, [], strategy}]
     )
   end
 

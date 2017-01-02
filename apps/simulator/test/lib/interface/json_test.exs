@@ -1,12 +1,12 @@
-defmodule JsonInterfaceTest do
+defmodule JsonTest do
   use ExUnit.Case
-  alias Simulator.{WorldManager, Location, JsonInterface}
-  doctest JsonInterface
+  alias Simulator.{WorldManager, Location, Interface.Json}
+  doctest Json
 
   describe "snapshot" do
     test "for an empty board, returns an empty array" do
       WorldManager.start_link({10, 10}, {0, 0})
-      assert JsonInterface.snapshot == []
+      assert Json.snapshot == []
     end
 
     test "returns json representation of board" do
@@ -19,7 +19,7 @@ defmodule JsonInterfaceTest do
         %{x: 1, y: 2, type: "human", uuid: nil, health: nil},
       ]
 
-      assert JsonInterface.snapshot |> Enum.sort == as_json |> Enum.sort
+      assert Json.snapshot |> Enum.sort == as_json |> Enum.sort
     end
   end
 end
