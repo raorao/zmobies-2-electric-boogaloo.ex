@@ -1,9 +1,9 @@
-defmodule SimulatorPresenterTest do
+defmodule SimulatorConsoleInterfaceTest do
   use ExUnit.Case
-  alias Simulator.{Being, Presenter, World}
-  doctest Presenter
+  alias Simulator.{Being, ConsoleInterface, ConsoleInterface.Presenter, World}
+  doctest ConsoleInterface
 
-  describe "to_s" do
+  describe "Presenter" do
     test "can print an empty list" do
       World.init
       assert Presenter.to_s(colors: false) == ""
