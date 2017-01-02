@@ -1,6 +1,6 @@
 defmodule Simulator.StatsManager do
   use GenServer
-  alias Simulator.{World, GameManager}
+  alias Simulator.{World, Game}
 
   def start_link do
     GenServer.start_link(
@@ -24,7 +24,7 @@ defmodule Simulator.StatsManager do
         send(self, :check_status)
         5
       old_status == new_status && checks == 0 ->
-        GameManager.finish
+        Game.finish
         0
       old_status == new_status ->
         send(self, :check_status)

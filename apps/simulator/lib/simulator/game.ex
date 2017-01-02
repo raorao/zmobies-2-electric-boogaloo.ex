@@ -1,4 +1,4 @@
-defmodule Simulator.GameManager do
+defmodule Simulator.Game do
   use Supervisor
   alias Simulator.{WorldManager, CharacterSupervisor, StatsManager}
 

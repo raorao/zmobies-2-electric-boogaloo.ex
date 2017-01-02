@@ -1,6 +1,6 @@
 defmodule WebClient.PageController do
   use WebClient.Web, :controller
-  alias Simulator.{GameSupervisor, GameManager}
+  alias Simulator.{GameSupervisor, Game}
 
   def index(conn, _params) do
     render conn, "index.html"
@@ -13,7 +13,7 @@ defmodule WebClient.PageController do
   def start(conn, %{"strategy" => strategy}) do
     case start_simulation(strategy) do
       {:error, {:already_started, _}} ->
-        GameManager.stop
+        Game.stop
         start_simulation(strategy)
       {:ok, _} -> nil
     end

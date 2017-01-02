@@ -1,6 +1,6 @@
 defmodule Simulator.GameSupervisor do
   use Supervisor
-  alias Simulator.{GameManager, Interface}
+  alias Simulator.{Game, Interface}
 
   def start_link do
     Supervisor.start_link(__MODULE__, :ok, name: :game_supervisor)
@@ -28,7 +28,7 @@ defmodule Simulator.GameSupervisor do
   end
 
   def init(:ok) do
-    children = [ supervisor(GameManager, [], restart: :transient) ]
+    children = [ supervisor(Game, [], restart: :transient) ]
 
     supervise(children, strategy: :simple_one_for_one)
   end
