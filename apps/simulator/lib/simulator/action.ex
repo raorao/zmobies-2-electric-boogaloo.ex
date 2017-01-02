@@ -1,7 +1,7 @@
 defmodule Simulator.Action do
   alias Simulator.{WorldManager, Location, Being, Character}
 
-  @type t :: {:attack, %Location{}} | {:move, [%Location{}]}
+  @type t :: {:attack, %Location{}} | {:move, [%Location{}]} | {:talk, [%Location{}], any()}
 
   def move([], being), do: being
 
