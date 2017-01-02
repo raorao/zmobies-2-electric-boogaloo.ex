@@ -5,6 +5,4 @@ defmodule Simulator.Location do
   def at(x: x, y: y) when x != nil and y != nil do
     %__MODULE__{x: x, y: y}
   end
-
-  def as_json(%__MODULE__{x: x, y: y}), do: "#{x},#{y}"
 end

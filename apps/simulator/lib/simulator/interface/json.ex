@@ -1,5 +1,5 @@
 defmodule Simulator.Interface.Json do
-  alias Simulator.{Being, WorldManager, StatsManager, Location}
+  alias Simulator.{Being, WorldManager, StatsManager}
   use GenServer
 
   def start_link(broadcast_fn) do
@@ -38,12 +38,6 @@ defmodule Simulator.Interface.Json do
 
   def snapshot do
     WorldManager.all
-    |> Enum.map(fn({location, being}) ->
-      {
-        Location.as_json(location),
-        Being.as_json(being)
-      }
-    end)
-    |> Enum.into(%{})
+    |> Enum.map(&Being.as_json/1)
   end
 end
