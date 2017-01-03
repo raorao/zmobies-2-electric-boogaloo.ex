@@ -23,16 +23,8 @@ let channel = socket.channel("game:lobby", {})
 
 let bus = new Bacon.Bus()
 
-var lastTime = Date.now()
-
 channel.on("update", function(payload) {
-  let nextTime = Date.now()
-  console.log(nextTime - lastTime)
-  lastTime = nextTime
-
   bus.push(payload)
-
-
 })
 
 let stream = bus.bufferingThrottle(110)
