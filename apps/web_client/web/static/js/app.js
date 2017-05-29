@@ -27,7 +27,7 @@ channel.on("update", function(payload) {
   bus.push(payload)
 })
 
-let stream = bus.bufferingThrottle(110)
+let stream = bus
 
 class Container extends React.Component {
 
