@@ -69,8 +69,7 @@ defmodule Simulator.Character do
 
   def handle_info(:move, {strategy, being = %Being{health: health}, custom_state}) when health <= 0 do
     WorldManager.remove(being.location)
-    stop(being)
-    {:noreply, {strategy, being, custom_state}}
+    {:stop, :normal, {strategy, being, custom_state}}
   end
 
   def handle_info(:move, {strategy, being, custom_state}) do
