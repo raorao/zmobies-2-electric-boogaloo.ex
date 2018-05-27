@@ -5,7 +5,7 @@ defmodule Zmobies.Mixfile do
     [apps_path: "apps",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps,
+     deps: deps(),
      dialyzer: [ paths: ["_build/dev/lib/simulator/ebin", "_build/dev/lib/web_client/ebin"]]
     ]
   end
@@ -22,7 +22,7 @@ defmodule Zmobies.Mixfile do
   #
   # Dependencies listed here are available only for this project
   # and cannot be accessed from applications inside the apps folder
-  defp deps do
+  defp deps() do
     [
       { :dialyxir, "~> 0.4", only: [:dev], runtime: false},
     ]
