@@ -4,7 +4,7 @@ Zombie simulator in elixir.
 
 ### Usage
 
-requires elixir 1.3.4. To run in console:
+requires elixir 1.6.5. To run in console:
 
 ```sh
 $ mix deps.get
