@@ -16,6 +16,7 @@ $ iex> Simulator.GameSupervisor.for_console(x: 45, y: 45, humans: 400, zombies: 
 To run in server:
 
 ```sh
+$ (cd apps/web_client && npm install)
 $ mix phoenix.server
 ```
 
